@@ -1,0 +1,85 @@
+<div ng-controller="rechargeCtrl">
+	<div class="bar bar-header red-gb">
+		<button class="button button-clear ion-ios-arrow-back" histroy></button>
+		<h1 class="title light">支付宝转账</h1>
+	</div>
+	<!--content-->
+	<div class="scroll-content has-header" overflow-scroll="true">
+			<div class="list input-box">
+				<div class="item item-input">
+					<span>充值金额</span>
+					<input type="tel" maxlength="7" ng-model="zfb.money" class="input" placeholder="请输入充值金额"/>
+				</div>
+				<div class="item item-input">
+					<span>支付宝账号</span>
+					<input type="text" class="input" placeholder="请输入您用来转账的支付宝账号" ng-if="zfb.num!=''" ng-model="zfb.num" disabled="disabled"/>
+					<input type="text" class="input" placeholder="请输入您用来转账的支付宝账号" ng-if="zfb.num==''" ng-model="zfb.zfbnumber"/>
+				</div>
+			</div>
+			<div class="padding dlzc-btn">
+				<button class="button button-block red-gb light" ng-click="recharge(1);">提交</button>
+			</div>
+			<div class="tips">
+				<p>为了防止盗刷和洗钱，请注意以下几点：</p>
+				<p>1.首次充值请绑定您用来转账的支付宝账号</p>
+				<p>2.支付宝账号确认绑定后如需修改请联系客服</p>
+				<p>3.每次充值最少充值10元</p>
+				<p>4.如果绑定的支付宝账号与实际转账的支付宝账号不一致，则充值无法到账</p>
+				<p style="margin-top: 15px;">如需查看投注站资质信息及店主身份信息，请<a >点击这里</a></p>
+			</div>
+			<div class="contact-bot">
+				<p>如充值未及时到账</p>
+				<p>请联系店主：<span>15007142244</span></p>
+			</div>
+	</div>
+	<!--popup-->
+	<div class="backdrop visible active" ng-show="zfbTab"></div>
+	<div class="popup-container popup-showing active" ng-show="zfbTab">
+		<div class="popup popup-cz">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row grey3">
+						<div class="col text-center">支付宝转账充值流程</div>
+						<button class="button button-clear" ng-click="closeTab()">关闭</button>
+					</div>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="zfb-process">
+					<p>1.在支付宝中选择转账到支付宝账户</p>
+					<p>2.粘贴本投注站店主支付宝账号</p>
+					<p>3.输入转账金额并完成转账</p>
+				</div>
+				<div class="zfb-account">
+					<p>
+						XX体育彩票投注站店主支付宝账号
+						<span>15007142244</span>
+					</p>
+				</div>
+			</div>
+			<div class="popup-buttons">
+				<button class="qr single-btn" data-clipboard-text="15007142244" ng-click="tozfb()">打开支付宝</button>
+			</div>
+		</div>
+	</div>
+	<!--popup-->
+	<div class="backdrop visible active" ng-show="rechargeTipsTab"></div>
+	<div class="popup-container popup-showing active popup-bet" ng-show="rechargeTipsTab">
+		<div class="popup">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding grey3">
+						<div class="col text-center">转账提示</div>
+					</div>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-notice">是否支付完成转账？</div>
+			</div>
+			<div class="popup-buttons">
+				<button>未转账</button>
+				<button class="qr">已完成转账</button>
+			</div>
+		</div>
+	</div>
+</div>

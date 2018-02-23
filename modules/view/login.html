@@ -1,0 +1,29 @@
+
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">登录</h1>
+	<a class="button button-clear" style="font-size: 13px;" ui-sref="codelogin">验证码登录</a>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true">
+	<ion-scroll  ng-controller="loginCtrl">
+		<div class="list input-box">
+			<div class="item item-input">
+				<span>用户名</span>
+				<input type="tel" class="input" ng-model="phone" placeholder="请输入手机号"/>
+			</div>
+			<div class="item item-input">
+				<span>密码</span>
+				<input type="password" class="input" ng-model="password" placeholder="请输入密码"/>
+			</div>
+		</div>
+		<div class="about-pw row">
+			<p class="col text-left"><span class="icon ion-ios-checkmark" ng-class="scls" ng-click="showred()"></span>记住密码</p>
+			<a class="col text-right"  ui-sref="fgtpwd">忘记密码？</a>
+		</div>
+		<div class="padding dlzc-btn">
+			<button class="button button-block red-gb light" ng-click="logincheck()">登录</button>
+			<button class="button button-block light-bg grey8" ui-sref="invitation">注册</button>
+		</div>
+	</ion-scroll>
+</div>

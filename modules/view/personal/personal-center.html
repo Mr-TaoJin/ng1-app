@@ -1,0 +1,82 @@
+<!--header-->
+<div class="bar bar-header black-gb user-dlzx">
+    <!--<button class="button button-clear ion-ios-arrow-back" histroy></button>-->
+    <h1 class="title">个人中心</h1>
+</div>
+<div class="scroll-content has-header has-footer" overflow-scroll="true">
+    <ion-scroll ng-controller="personalCenterCtrl">
+        <div class="personal-center" style="margin-bottom: 30px">
+            <div class="center-head">
+                <div class="back-top"></div>
+                <div class="msg-container">
+                    <img src="resources/img/user-touxiang.png" ui-sref="setdata">
+                    <div class="text-center user-name">用户名称</div>
+                    <div class="row store-msg">
+                        <div class="col money" ui-sref="goldManagement">
+                            <table>
+                                <tr>
+                                    <td rowspan="2"><img src="resources/img/cdye.png" alt=""></td>
+                                    <td>彩店余额</td>
+                                    <td rowspan="2">
+                                        <i class="icon ion-chevron-right"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="redColor"><span>10000.00</span>元</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col package" ui-sref="my-envelope">
+                            <table class="text-center">
+                                <tr>
+                                    <td rowspan="2"><img src="resources/img/kyhb.png" alt=""></td>
+                                    <td>可用红包</td>
+                                    <td rowspan="2">
+                                        <i class="icon ion-chevron-right"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="redColor"><span>899.56</span>元</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="center-container">
+                <div class="list">
+                    <a class="item item-icon-right" ui-sref="recording">
+                        <img src="resources/img/tzjl.png">
+                        <span class="title">投注记录</span>
+                        <i class="icon ion-chevron-right"></i>
+                    </a>
+                    <a class="item item-icon-right" >
+                        <img src="resources/img/wdcd.png">
+                        <span class="title">我的彩店</span>
+                        <i class="icon ion-chevron-right"></i>
+                    </a>
+                    <a class="item item-icon-right">
+                        <img src="resources/img/zfsz.png">
+                        <span class="title">支付设置</span>
+                        <i class="icon ion-chevron-right"></i>
+                    </a>
+                    <a class="item item-icon-right" >
+                        <img src="resources/img/xxdy.png">
+                        <span class="title">消息订阅</span>
+                        <i class="icon ion-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="center-container" style="margin-top: 10px">
+                <div class="list">
+                    <a class="item item-icon-right" >
+                        <img src="resources/img/bzzx.png">
+                        <span class="title">帮助中心</span>
+                        <i class="icon ion-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ion-scroll>
+</div>
+<tab></tab>

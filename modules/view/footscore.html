@@ -1,0 +1,78 @@
+<div ng-controller="scoreresultCtrl">
+	<!--header-->
+	<div class="bar bar-header red-gb">
+		<button class="button button-clear ion-ios-arrow-back" histroy></button>
+		<div class="title">
+			<div class="toggle-tit">
+				<span  ui-sref="football" ng-class="cls['football']">足球</span>
+				<span ng-class="cls['basketball']" ui-sref="basketball">篮球</span>
+			</div>
+		</div>
+		<!-- <div class="buttons">
+			<a href="#" class="button button-clear ion-ios-color-filter-outline icon-filter"></a>
+		</div> -->
+	</div>
+	<!--subheader-->
+	<div class="bar bar-subheader text-center row subheader-tab font12 grey6">
+		<div class="col col-25 pre" ng-click="match4Date(1);">上一期</div>
+		<div class="col col-50 chose-date">
+			<span>{{dateArr[1]}}</span>|<span>{{dateArr[3]}}</span>	
+		</div>
+		<div class="col col-25 next" ng-class="nextcls" ng-disabled="nextdisabled" ng-click="match4Date(2);">下一期</div>
+	</div>
+	<!--content-->
+	<div class="scroll-content has-header has-subheader has-subheader-tab" overflow-scroll="true" >
+		<ion-scroll>
+			<div class="game-list-container list">
+				<div class="game-list-tit row">
+					<p class="col">
+						<span>共<span>{{resultSize}}</span>场比赛，<span>{{processing}}</span>场进行中，<span>{{complate}}</span>场未开赛</span>
+					</p>
+				</div>
+				<ion-item class="game-list-con item cx-item" ng-repeat="m in match">
+					<div class="row padding game-list-con-team">
+						<div class="col text-center grey8 game-list-con-lt">
+							<span>{{m.league_name_short}}</span>
+							<span>{{m.plan_day}}<em>{{m.plan_number}}</em></span>
+							<span>{{m.book_end_time.substring(11,16)}}截止</span>
+						</div>
+						<div class="col text-center cx-team">
+							<p class="team03">
+								<span><img ng-src="//m.surewin.com/static/image/teamlogos/png/{{m.home_team_id}}.png" err-src="//m.surewin.com/static/h5/img/logo-c.png?mid={{m.match_number}},{{m.home_team_id}},{{m.visiting_team_id}},1"></span>
+								<span>{{m.home_team_short}}</span>
+							</p>
+							<p class="vs02">
+								<span class="cx-score-qc">{{m.full_score}}</span>
+								<span class="cx-score-bc">半场<em>{{m.half_score}}</em></span>
+							</p>
+							<p class="team03">
+								<span><img ng-src="//m.surewin.com/static/image/teamlogos/png/{{m.visiting_team_id}}.png" err-src="//m.surewin.com/static/h5/img/logo-c.png?mid={{m.match_number}},{{m.home_team_id}},{{m.visiting_team_id}},1"></span>
+								<span>{{m.visiting_team_short}}</span>
+							</p>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="row padding">
+						<table class="cx-detail">
+							<tr>
+								<td>胜平负</td>
+								<td>让球</td>
+								<td>猜比分</td>
+								<td>总进球</td>
+								<td>半全场</td>
+							</tr>
+							<tr>
+								<td>{{m.spf_result}}</td>
+								<td><span ng-class="m.bf_cls">{{m.let_points}}</span>{{m.rqspf_result}}</td>
+								<td>{{m.full_score}}</td>
+								<td>{{m.zjq_result}}</td>
+								<td>{{m.bqc_result}}</td>
+							</tr>
+						</table>
+					</div>
+				</ion-item>
+			</div>
+		</ion-scroll>
+	</div>
+
+</div>

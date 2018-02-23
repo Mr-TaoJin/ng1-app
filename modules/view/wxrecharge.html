@@ -1,0 +1,56 @@
+<div ng-controller="rechargeCtrl">
+	<div class="bar bar-header red-gb">
+		<button class="button button-clear ion-ios-arrow-back">返回</button>
+		<h1 class="title light">微信转账</h1>
+	</div>
+	<!--content-->
+	<div class="scroll-content has-header" overflow-scroll="true">
+		<div class="wx-qrcode">
+			<img src="resources/img/img-mqrcode.png">
+			<p>店主收款码<span>保存到相册</span></p>
+		</div>
+		<div class="list input-box">
+			<div class="item item-input">
+				<span>充值金额</span>
+				<input type="number" class="input" placeholder="请输入充值金额"/>
+			</div>
+			<div class="item item-input">
+				<span>用户识别码</span>
+				<input type="number" class="input"placeholder="请输入识别码"/>
+			</div>
+		</div>
+		<div class="padding dlzc-btn">
+			<button class="button button-block red-gb light">复制识别码并打开微信</button>
+		</div>
+		<div class="tips">
+			<p>微信转账说明：</p>
+			<p>1.请先保存店主收款二维码</p>
+			<p>2.输入充值金额并打开微信，使用扫一扫扫描相册的收款二维码</p>
+			<p>3.转账请添加留言内容“用户识别码”，否则充值不能到账</p>
+		</div>
+		<div class="contact-bot">
+			<p>如充值未及时到账</p>
+			<p>请联系店主：<span>15007142244</span></p>
+		</div>
+	</div>
+	<!--popup-->
+	<div class="backdrop visible active" ng-show="rechargeTipsTab"></div>
+	<div class="popup-container popup-showing active popup-bet"  ng-show="rechargeTipsTab">
+		<div class="popup">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding grey3">
+						<div class="col text-center">转账提示</div>
+					</div>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-notice">是否支付完成转账？</div>
+			</div>
+			<div class="popup-buttons">
+				<button>未转账</button>
+				<button class="qr">已完成转账</button>
+			</div>
+		</div>
+	</div>
+</div>

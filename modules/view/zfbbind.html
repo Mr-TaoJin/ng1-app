@@ -1,0 +1,19 @@
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">支付宝</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true" ng-controller="setupCtrl">
+	<div class="list input-box">
+		<div class="item item-input">
+			<span>真实姓名</span>
+			<input type="text" class="input" maxlength="6" ng-model="zfbbind.name" placeholder="请输入您的姓名"/>
+		</div>
+		<div class="item item-input">
+			<span>支付宝</span>
+			<input type="text" class="input" maxlength="25" ng-model="zfbbind.alipayId"  placeholder="请输入您的支付宝账号"/>
+		</div>
+	<div class="padding dlzc-btn">
+		<button class="button button-block red-gb light" ng-click="bind(1)">绑定</button>
+	</div>
+</div>

@@ -1,0 +1,156 @@
+
+<div ng-controller="betRecordCtrl">
+	<div ng-show="!showDetail">
+		<!--header-->
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" histroy></button>
+			<h1 class="title light" ng-click="showTab(1)">投注记录<i class="icon ion-chevron-down font12" style="margin-left: 3px;"></i></h1>
+		</div>
+		<div class="float-chose-container"  ng-show="filter.showLottery">
+			<div class="float-chose">
+				<div style="font-size: 12px;"  ng-click="searchBy(1,'')" ng-class="{'chose':filter.lotteryType==''}">全部<i class="icon ion-checkmark-circled assertive" ng-if="filter.lotteryType==''"></i></div>
+				<div style="font-size: 12px;"  ng-click="searchBy(1,1)" ng-class="{'chose':filter.lotteryType==1}">竞彩足球<i class="icon ion-checkmark-circled assertive" ng-if="filter.lotteryType==1"></i></div>
+				<div style="font-size: 12px;"  ng-click="searchBy(1,2)" ng-class="{'chose':filter.lotteryType==2}">竞彩篮球<i class="icon ion-checkmark-circled assertive" ng-if="filter.lotteryType==2"></i></div>
+			</div>
+		</div>
+		<!--subheader-->
+		<div class="bar bar-subheader text-center row subheader-tab font12 tz-tab">
+			<a ng-click="searchBy(0,'-1')" ng-class="{'tab-active':filter.winStatus=='-1'}" class="col">进行中</a>
+			<a ng-click="searchBy(0,'1')" ng-class="{'tab-active':filter.winStatus=='1'}" class="col">已完结</a>
+		</div>
+		<!--content-->
+		<div class="scroll-content has-header has-subheader" overflow-scroll="true" id="waiScrol">
+			<div class="tz-list list" id="contentScrol">
+				<div class="item" ng-repeat="o in order" ng-click="showDetailFun(o)">
+					<dd class="tz-con01">
+						<span>{{o.insertTime.split(" ")[0]}}</span>
+						<span>{{o.insertTime.split(" ")[1]}}</span>
+					</dd>
+					<dd class="tz-con02">
+						<span>{{o.lotteryType}}</span>
+						<span>{{o.lotteryId}}</span>
+					</dd>
+					<dd class="tz-con03">¥{{o.actualBetMoney}}</dd>
+					<dd class="tz-con04" ng-if="o.winStatus==1">
+						<span class="tz-jj">{{o.actualAwardMoney}}</span>
+						<span>已中奖</span>
+					</dd>
+					<dd class="tz-con04" ng-if="o.winStatus!=1">
+						<span>{{o.winStatusStr}}</span>
+						<span>{{o.issueStatusStr}}</span>
+					</dd>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 详情页 -->
+	<div ng-show="showDetail" id="orderDetail">
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" ng-click="goToBack()">返回</button>
+			<h1 class="title light">方案详情</h1>
+		</div>
+		<!--content-->
+		<div class="scroll-content has-header" overflow-scroll="true" >
+			<div class="plan-lx">
+				<img ng-src="/app/resources/img/img-jczq.png" ng-if="detail.lotteryType=='竞足'">
+				<img ng-src="/app/resources/img/img-jclq.png" ng-if="detail.lotteryType=='竞篮'">
+				<p><span>{{detail.lotteryType}}</span><span>{{detail.lotteryId}}</span></p>
+			</div>
+			<div class="plan-process">
+				<ul class="process">
+					<li ng-class="{'process-li':detail.issueStatus>=0,'process-li-hui':detail.issueStatus==-1}">支付成功</li>
+					<li ng-class="{'process-li':detail.issueStatus>=0,'process-li-hui':detail.issueStatus==-1}">彩店接单</li>
+					<li ng-class="{'process-li':detail.issueStatus==2,'process-li-hui':detail.issueStatus!=2}">完成出票</li>
+					<li class="process-li-hui" ng-if="detail.winStatus==-1">等待开奖</li>
+					<li class="process-li" ng-if="detail.winStatus==1">已中奖</li>
+					<li class="process-li" ng-if="detail.winStatus==0">未中奖</li>
+					<div class="clearfix"></div>
+				</ul>
+			</div>
+			<div class="plan-je row text-center">
+				<dd class="col col-50 je01">方案金额<span>¥{{detail.actualBetMoney}}</span></dd>
+				<dd class="col col-50 je02">奖金<a  ng-if="detail.isJjyh==1" ng-click="showJjyhDetail()">(查看明细)</a><span>{{detail.actualAwardMoney==null?'-':'¥'+detail.actualAwardMoney}}</span></dd>
+			</div>
+			<div class="plan-detail">
+				<table border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>编号</th>
+						<th>比赛双方</th>
+						<th>投注选项</th>
+						<th>赛果</th>
+					</tr>
+					<tr ng-repeat="val in detail.contentJson">
+						<td>
+							<span>{{val.num}}</span>
+							<span>{{val.lname}}</span>
+						</td>
+						<td>
+							<span>{{val.home_team}}</span>
+							<span class="score">{{val.score==null?'VS':val.score}}</span>
+							<span>{{val.visiting_team}}</span>
+						</td>
+						<td>
+							<span ng-class="{'correct':v.indexOf('W')!=-1}" ng-repeat="(k,v) in val.text">{{k}}<em>{{v.indexOf("W")!=-1?v.substring(1):v}}</em></span>
+							<!-- <span>平<em>2.36</em></span>
+							<span>2球<em>6.50</em></span>
+							<span>2:0<em>5.34</em></span>
+							<span>胜-胜<em>15.00</em></span> -->
+						</td>
+						<td ng-if="!val.score"><span>-</span></td>
+						<td ng-if="val.score&&v.score=='-1:-1'"><span>取消</span></td>
+						<td ng-if="val.score&&v.score!='-1:-1'">
+							<!-- <span ng-if="val.spfresult">{{val.spfresult}}</span>
+							<span ng-if="val.zjqresult||v.zjqresult==0">{{val.zjqresult}}球</span>
+							<span ng-if="val.score">{{val.score}}</span>
+							<span ng-if="val.bqcresult">{{val.bqcresult}}</span>
+							<span ng-if="val.dxfresult">{{val.dxfresult}}</span>
+							<span ng-if="val.sfcresult">{{val.sfcresult}}</span> -->
+							<span ng-repeat="(k,r) in val.showResult" style="font-weight: 800;">{{k=='ttg'?r+'球':r}}</span>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">过关方式：<u>{{detail.count}}场</u><u ng-repeat="p in detail.passType.split(',')">,{{p=='101'?'单关':p.replace('0','串')}}</u></td>
+					</tr>
+				</table>
+			</div>
+			<div class="padding dlzc-btn plan-btns">
+				<button class="button button-block red-gb light qr" ng-click="toBet(detail.typePath)">再来一单</button>
+				<!-- <button class="button red" ng-click="shareOrder();">分享此单</button> -->
+			</div>
+		</div>
+		
+		<!--popup-->
+		<div class="backdrop visible active" ng-show="showMx"></div>
+		<div class="popup-container popup-showing active" ng-show="showMx">
+			<div class="popup popup-jj">
+				<div class="popup-head">
+					<h3 class="popup-title" style="position: relative;">
+						<div class="col text-center">奖金明细</div>
+						<button class="button button-clear" style="position: absolute;" ng-click="closeJjjTab()">关闭</button>
+					</h3>
+				</div>
+				<div class="popup-body bet-scroll">
+					<div class="scroll">
+						<table border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<th style="width: 50%;">单注组合</th>
+								<th style="width: 15%;">倍数</th>
+								<th style="width: 35%;">奖金</th>
+							</tr>
+							<tr ng-repeat="dd in jjyhDetail">
+								<td>
+									<span ng-repeat="mat in dd.matches">{{mat.text}}</span>
+								</td>
+								<td>{{dd.mul}}</td>
+								<td ng-if="dd.winStatus==-1">待开奖</td>
+								<td ng-if="dd.winStatus==0">未中奖</td>
+								<td ng-if="dd.winStatus==1">{{dd.bonus}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>

@@ -1,0 +1,958 @@
+<div ng-controller="OrderJcZqCtrl">
+	<div ng-show="!filterMacth&&!isFollowOrder&&!showJjyhTab">
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" ui-sref="index">返回</button>
+			<div class="title">
+				<div class="toggle-tit">
+					<span ng-class="!isDan?'toggle-active':''" ng-click="choseSelect()">全部</span> 
+					<span ng-class="isDan?'toggle-active':''" ng-click="choseSelect(1)">单关</span>
+				</div>
+			</div>
+			<div class="buttons">
+				<a class="button button-clear ion-ios-color-filter-outline icon-filter"  ng-click="showFilterTab();"></a>
+				<!-- <a class="button button-clear button-filter" ng-click="showFilterTab();"><img src="resources/img/img-filter.png"></a> -->
+			</div>
+		</div>
+		<!--subheader-->
+		<div class="bar bar-subheader text-center row subheader-tab font12">
+			<a ui-sref="order-had" class="col col-25" ui-sref-active="tab-active">胜平负</a> 
+			<a ui-sref="order-crs" class="col" ui-sref-active="tab-active">比分</a> 
+			<a ui-sref="order-ttg" class="col" ui-sref-active="tab-active">总进球</a> 
+			<a ui-sref="order-hafu" class="col" ui-sref-active="tab-active">半全场</a> 
+			<a ui-sref="order-ht" class="col" ui-sref-active="tab-active">混合</a>
+		</div>
+		<!--footer-->
+		<div class="bar bar-footer row dark-bg jc-next">
+			<div class="col col-75">
+				<p>
+					已选<span>{{count}}</span>场
+				</p>
+				<p class="notice">*页面赔率仅供参考，奖金赔率以实际出票为准</p>
+			</div>
+			<div class="col col-25 jc-next-btn">
+				<button class="button light-bg" ng-click="next()">下一步</button>
+			</div>
+		</div>
+		<!--content-->
+		<div
+			class="scroll-content has-header has-subheader has-footer has-subheader-tab"
+			overflow-scroll="true">
+			<!-- <ion-scroll> -->
+			<div class="game-list-container list" ng-repeat="(key,d) in dataMatch track by $id(key)">
+				<div class="game-list-tit row" ng-click="showOrHide(key);" ng-show="dataMatch[key].hasChild">
+					<p class="col col-90">
+						<span ng-bind="d.date"></span> <span ng-bind="d.week"></span><span>[12:00-次日12:00]</span>
+						<span>共<span ng-bind="d.list.length"></span>场比赛
+						</span>
+					</p>
+					<button class="buton button-clear  col" ng-class="{'ion-ios-arrow-up':d.show,'ion-ios-arrow-down':!d.show}"></button>
+				</div>
+				<ion-item class="game-list-con item"  ng-repeat="m in d.list" ng-show="m.show=='1'&&d.show&&(isDan&&m.single||!isDan)">
+					<div class="row padding game-list-con-team">
+						<div class="col col-30 text-left grey3 team01">
+							<span class="team-logo"><img ng-src="{{m.h_img}}" err-src="{{m.err_img}}"></span> <span ng-bind="m.h_cn_abbr"></span><!--  <span
+								class="team-rank">{{m.h_order}}</span> -->
+						</div>
+						<div class="col col-15 text-center vs">VS</div>
+						<div class="col col-30 text-right grey3 team01">
+							<!-- <span class="team-rank">{{m.a_order}}</span> --> <span ng-bind="m.a_cn_abbr"></span> <span
+								class="team-logo"><img ng-src="{{m.a_img}}" err-src="{{m.err_img}}"></span>
+						</div>
+					</div>
+					<div class="row padding">
+						<div class="col text-center grey8 game-list-con-lt">
+							<span ng-bind="m.l_cn_abbr"></span> <span ng-bind="m.num"></span> <span ng-bind="m.book_end_time.substring(11,16)">截止</span>
+						</div>
+						<!-- 胜平负/让球 -->
+						<div class="col bet-btns"  ng-if="g_config.lottery_type=='had'">
+							<dd>
+								<div  ng-click="!m.had || (m.had.single =='0'&&isDan) || selectMatch(m.id,'h')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['h'],'jclq-span':m.had.single =='0'&&isDan}">
+									<span ng-if="m.had" ng-class="{'game-dan':m.had.single=='1'}">胜</span> <span ng-bind="m.had?m.had.h:'-'"></span>
+								</div>
+								<div  ng-click="!m.had || (m.had.single =='0'&&isDan) || selectMatch(m.id,'d')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['d'],'jclq-span':m.had.single =='0'&&isDan}">
+									<span ng-if="m.had.d">平</span> <span ng-bind="m.had?m.had.d:'-'"></span>
+								</div>
+								<div  ng-click="!m.had || (m.had.single =='0'&&isDan) || selectMatch(m.id,'a')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['a'],'jclq-span':m.had.single =='0'&&isDan}">
+									<span ng-if="m.had.a">负</span> <span ng-bind="m.had?m.had.a:'-'"></span>
+								</div>
+								<!-- <div class="danguan" ng-show="m.had.single=='1'">
+									单<br>关
+								</div> -->
+							</dd>
+							<dd>
+								<div  ng-click="!m.hhad || (m.hhad.single =='0'&&isDan) || selectMatch(m.id,'h','hhad')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id]['hhad']&&selectMatchMap[m.id]['hhad']['h'],'jclq-span':m.hhad.single =='0'&&isDan}">
+									<span ng-if="m.hhad" ng-class="{'game-dan':m.hhad.single=='1'}"><em ng-bind="m.hhad.fixedodds"></em>胜</span> <span ng-bind="m.hhad?m.hhad.h:'-'"></span>
+								</div>
+								<div  ng-click="!m.hhad || (m.hhad.single =='0'&&isDan) || selectMatch(m.id,'d','hhad')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id]['hhad']&&selectMatchMap[m.id]['hhad']['d'],'jclq-span':m.hhad.single =='0'&&isDan}">
+									<span ng-if="m.hhad"><em ng-bind="m.hhad.fixedodds"></em>平</span> <span ng-bind="m.hhad?m.hhad.d:'-'"></span>
+								</div>
+								<div  ng-click="!m.hhad || (m.hhad.single =='0'&&isDan)|| selectMatch(m.id,'a','hhad')" ng-class="{'bet-btns-active':selectMatchMap[m.id]&&selectMatchMap[m.id]['hhad']&&selectMatchMap[m.id]['hhad']['a'],'jclq-span':m.hhad.single =='0'&&isDan}">
+									<span ng-if="m.hhad"><em ng-bind="m.hhad.fixedodds"></em>负</span> <span ng-bind="m.hhad?m.hhad.a:'-'"></span>
+								</div>
+								<!-- <div class="danguan" ng-show="m.hhad.single=='1'">
+									单<br>关
+								</div> -->
+							</dd>
+						</div>
+						<!-- 总进球 -->
+						<dl class="col bet-btns total-goals" ng-if="g_config.lottery_type=='ttg'">
+							<dd>
+								<div ng-click="selectMatch(m.id,'s0')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s0']?'bet-btns-active':''">
+									<span>0</span>
+									<span ng-bind="m.ttg.s0"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s1')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s1']?'bet-btns-active':''">
+									<span>1</span>
+									<span ng-bind="m.ttg.s1"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s2')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s2']?'bet-btns-active':''">
+									<span>2</span>
+									<span ng-bind="m.ttg.s2"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s3')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s3']?'bet-btns-active':''">
+									<span>3</span>
+									<span ng-bind="m.ttg.s3"></span>
+								</div>
+							</dd>
+							<dd>
+								<div ng-click="selectMatch(m.id,'s4')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s4']?'bet-btns-active':''">
+									<span>4</span>
+									<span ng-bind="m.ttg.s4"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s5')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s5']?'bet-btns-active':''">
+									<span>5</span>
+									<span ng-bind="m.ttg.s5"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s6')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s6']?'bet-btns-active':''">
+									<span>6</span>
+									<span ng-bind="m.ttg.s6"></span>
+								</div>
+								<div ng-click="selectMatch(m.id,'s7')" ng-class="selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]['s7']?'bet-btns-active':''">
+									<span>7+</span>
+									<span ng-bind="m.ttg.s7"></span>
+								</div>
+							</dd>
+						</dl>
+						<!--比分,进球数  -->
+						<div class="col bet-btns" ng-if="g_config.lottery_type=='crs' || g_config.lottery_type=='hafu'">
+							<dd class="bet-con" ng-class="{'bet-chose-con':selectMatchMap[m.id]&&selectMatchMap[m.id][g_config.lottery_type]&&selectMatchMap[m.id][g_config.lottery_type]!={}}">
+								<span  ng-click="showMatchTab(m.id)" ng-bind="selectMatchMap[m.id]&&selectMatchMap[m.id]['arr']?selectMatchMap[m.id]['arr']:'选择投注内容'"></span>
+							</dd>
+						</div>
+						
+						<!-- 混合过关 -->
+						<div class="col bet-btns" ng-if="g_config.lottery_type=='ht'">
+							<dd class="bet-con" ng-class="{'bet-chose-con':selectMatchMap[m.id]}">
+								<span  ng-click="showMatchTab(m.id)" ng-bind="selectMatchMap[m.id]&&selectMatchMap[m.id]['arr']?selectMatchMap[m.id]['arr']:'选择投注内容'"></span>
+							</dd>
+						</div>
+					</div>
+				</ion-item>
+			</div>
+			</ion-scroll>
+		</div>
+		
+		<!-- 比分弹窗 -->
+		<div ng-if="g_config.lottery_type=='crs'" ng-show="showTab">
+			<div class="backdrop visible active"></div>
+			<div class="popup-container popup-showing active popup-bet">
+				<div class="popup">
+					<div class="popup-head">
+						<h3 class="popup-title">
+							<div class="row padding grey3">
+								<div class="col text-right team02" ng-bind="tabMatch.h_cn_abbr"></div>
+								<div class="col col-20 text-center vs">VS</div>
+								<div class="col text-left team02" ng-bind="tabMatch.a_cn_abbr"></div>
+							</div>					
+						</h3>
+					</div>
+					<div class="popup-body">
+						<ion-scroll zooming="false" direction="y" class="scroll-view ionic-scroll">
+							<div class="scroll">
+								<table class="bet-bf">
+									<tr>
+										<th>胜</th>
+										<td>
+											<table>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0100']?'chose':''" ng-click="selectMatch(tabMatch.id,'0100','crs')">
+														<span>1:0</span>
+														<em ng-bind="tabMatch.crs['0100']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0200']?'chose':''" ng-click="selectMatch(tabMatch.id,'0200','crs')">
+														<span>2:0</span>
+														<em ng-bind="tabMatch.crs['0200']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0201']?'chose':''" ng-click="selectMatch(tabMatch.id,'0201','crs')">
+														<span>2:1</span>
+														<em ng-bind="tabMatch.crs['0201']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0300']?'chose':''" ng-click="selectMatch(tabMatch.id,'0300','crs')">
+														<span>3:0</span>
+														<em ng-bind="tabMatch.crs['0300']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0301']?'chose':''" ng-click="selectMatch(tabMatch.id,'0301','crs')">
+														<span>3:1</span>
+														<em ng-bind="tabMatch.crs['0301']"></em>
+													</td>
+												</tr>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0302']?'chose':''" ng-click="selectMatch(tabMatch.id,'0302','crs')">
+														<span>3:2</span>
+														<em ng-bind="tabMatch.crs['0302']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0400']?'chose':''" ng-click="selectMatch(tabMatch.id,'0400','crs')">
+														<span>4:0</span>
+														<em ng-bind="tabMatch.crs['0400']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0401']?'chose':''" ng-click="selectMatch(tabMatch.id,'0401','crs')">
+														<span>4:1</span>
+														<em ng-bind="tabMatch.crs['0401']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0402']?'chose':''" ng-click="selectMatch(tabMatch.id,'0402','crs')">
+														<span>4:2</span>
+														<em ng-bind="tabMatch.crs['0402']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0500']?'chose':''" ng-click="selectMatch(tabMatch.id,'0500','crs')">
+														<span>5:0</span>
+														<em ng-bind="tabMatch.crs['0500']"></em>
+													</td>
+												</tr>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0501']?'chose':''" ng-click="selectMatch(tabMatch.id,'0501','crs')">
+														<span>5:1</span>
+														<em ng-bind="tabMatch.crs['0501']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0502']?'chose':''" ng-click="selectMatch(tabMatch.id,'0502','crs')">
+														<span>5:2</span>
+														<em ng-bind="tabMatch.crs['0502']"></em>
+													</td>
+													<td colspan="3" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-h']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-h','crs')">
+														<span>胜其他</span>
+														<em ng-bind="tabMatch.crs['-1-h']"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<table class="bet-bf">
+									<tr>
+										<th>平</th>
+										<td>
+											<table>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0000']?'chose':''" ng-click="selectMatch(tabMatch.id,'0000','crs')">
+														<span>0:0</span>
+														<em ng-bind="tabMatch.crs['0000']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0101']?'chose':''" ng-click="selectMatch(tabMatch.id,'0101','crs')">
+														<span>1:1</span>
+														<em ng-bind="tabMatch.crs['0101']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0202']?'chose':''" ng-click="selectMatch(tabMatch.id,'0202','crs')">
+														<span>2:2</span>
+														<em ng-bind="tabMatch.crs['0202']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0303']?'chose':''" ng-click="selectMatch(tabMatch.id,'0303','crs')">
+														<span>3:3</span>
+														<em ng-bind="tabMatch.crs['0303']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-d']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-d','crs')">
+														<span>平其他</span>
+														<em ng-bind="tabMatch.crs['-1-d']"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<table class="bet-bf">
+									<tr>
+										<th>负</th>
+										<td>
+											<table>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0001']?'chose':''" ng-click="selectMatch(tabMatch.id,'0001','crs')">
+														<span>0:1</span>
+														<em ng-bind="tabMatch.crs['0001']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0002']?'chose':''" ng-click="selectMatch(tabMatch.id,'0002','crs')">
+														<span>0:2</span>
+														<em ng-bind="tabMatch.crs['0002']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0102']?'chose':''" ng-click="selectMatch(tabMatch.id,'0102','crs')">
+														<span>1:2</span>
+														<em ng-bind="tabMatch.crs['0102']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0003']?'chose':''" ng-click="selectMatch(tabMatch.id,'0003','crs')">
+														<span>0:3</span>
+														<em ng-bind="tabMatch.crs['0003']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0103']?'chose':''" ng-click="selectMatch(tabMatch.id,'0103','crs')">
+														<span>1:3</span>
+														<em ng-bind="tabMatch.crs['0103']"></em>
+													</td>
+												</tr>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0203']?'chose':''" ng-click="selectMatch(tabMatch.id,'0203','crs')">
+														<span>2:3</span>
+														<em ng-bind="tabMatch.crs['0203']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0004']?'chose':''" ng-click="selectMatch(tabMatch.id,'0004','crs')">
+														<span>0:4</span>
+														<em ng-bind="tabMatch.crs['0004']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0104']?'chose':''" ng-click="selectMatch(tabMatch.id,'0104','crs')">
+														<span>1:4</span>
+														<em ng-bind="tabMatch.crs['0104']"></em>
+													</td> 
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0204']?'chose':''" ng-click="selectMatch(tabMatch.id,'0204','crs')">
+														<span>2:4</span>
+														<em ng-bind="tabMatch.crs['0204']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0005']?'chose':''" ng-click="selectMatch(tabMatch.id,'0005','crs')">
+														<span>0:5</span>
+														<em ng-bind="tabMatch.crs['0005']"></em>
+													</td>
+												</tr>
+												<tr>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0105']?'chose':''" ng-click="selectMatch(tabMatch.id,'0105','crs')">
+														<span>1:5</span>
+														<em ng-bind="tabMatch.crs['0105']"></em>
+													</td>
+													<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0205']?'chose':''" ng-click="selectMatch(tabMatch.id,'0205','crs')">
+														<span>2:5</span>
+														<em ng-bind="tabMatch.crs['0205']"></em>
+													</td>
+													<td colspan="3" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-a']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-a','crs')">
+														<span>负其他</span>
+														<em ng-bind="tabMatch.crs['-1-a']"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</ion-scroll>
+					</div>
+					<div class="popup-buttons">
+						<button ng-click="removeSelect();">取消</button>
+						<button class="qr" ng-click="sureSelect()">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 半全场弹窗 -->
+		<div  ng-if="g_config.lottery_type=='hafu'" ng-show="showTab">
+			<!--popup-->
+			<div class="backdrop visible active"></div>
+			<div class="popup-container popup-showing active popup-bet">
+				<div class="popup">
+					<div class="popup-head">
+						<h3 class="popup-title">
+							<div class="row padding grey3">
+								<div class="col text-right team02" ng-bind="tabMatch.h_cn_abbr"></div>
+								<div class="col col-20 text-center vs">VS</div>
+								<div class="col text-left team02" ng-bind="tabMatch.a_cn_abbr"></div>
+							</div>					
+						</h3>
+					</div>
+					<div class="popup-body">
+						<ion-scroll zooming="false" direction="y" class="scroll-view ionic-scroll">
+							<div class="scroll">
+								<table class="bet-bf">
+									<tr>
+										<td>
+											<table>
+												<tr>
+													<td  ng-click="selectMatch(tabMatch.id,'hh')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['hh']?'chose':''">
+														<span>胜胜</span>
+														<em ng-bind="tabMatch.hafu.hh"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'hd')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['hd']?'chose':''">
+														<span>胜平</span>
+														<em ng-bind="tabMatch.hafu.hd"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'ha')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ha']?'chose':''">
+														<span>胜负</span>
+														<em ng-bind="tabMatch.hafu.ha"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<table class="bet-bf">
+									<tr>
+										<td>
+											<table>
+												<tr>
+													<td  ng-click="selectMatch(tabMatch.id,'dh')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['dh']?'chose':''">
+														<span>平胜</span>
+														<em ng-bind="tabMatch.hafu.dh"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'dd')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['dd']?'chose':''">
+														<span>平平</span>
+														<em ng-bind="tabMatch.hafu.dd"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'da')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['da']?'chose':''">
+														<span>平负</span>
+														<em ng-bind="tabMatch.hafu.da"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<table class="bet-bf">
+									<tr>
+										<td>
+											<table>
+												<tr>
+													<td  ng-click="selectMatch(tabMatch.id,'ah')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ah']?'chose':''">
+														<span>负胜</span>
+														<em ng-bind="tabMatch.hafu.ah"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'ad')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ad']?'chose':''">
+														<span>负平</span>
+														<em ng-bind="tabMatch.hafu.ad"></em>
+													</td>
+													<td  ng-click="selectMatch(tabMatch.id,'aa')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['aa']?'chose':''">
+														<span>负负</span>
+														<em ng-bind="tabMatch.hafu.aa"></em>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</div>
+						<!-- </ion-scroll> -->
+					</div>
+					<div class="popup-buttons">
+						<button ng-click="removeSelect();">取消</button>
+						<button class="qr" ng-click="sureSelect()">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 混合过关弹窗 -->
+		<div   ng-if="g_config.lottery_type=='ht'" ng-show="showTab">
+			<!--popup-->
+			<div class="backdrop visible active"></div>
+			<div class="popup-container popup-showing active popup-bet">
+				<div class="popup">
+					<div class="popup-head">
+						<h3 class="popup-title">
+							<div class="row padding grey3">
+								<div class="col text-right team02" ng-bind="tabMatch.h_cn_abbr"></div>
+								<div class="col col-20 text-center vs">VS</div>
+								<div class="col text-left team02" ng-bind="tabMatch.a_cn_abbr"></div>
+							</div>					
+						</h3>
+					</div>
+					<div class="popup-body">
+						<ion-scroll zooming="false" direction="y" class="scroll-view bet-scroll">
+							<div class="scroll">
+								<div class="bet-list">
+									<table class="bet-bf bet-spf">
+										<tr>
+											<th rowspan="2">胜<br>平<br>负</th>
+											<td>
+												<table>
+													<tr>
+														<td  ng-click="!tabMatch.had||tabMatch.had.single=='0'&&isDan  || selectMatch(tabMatch.id,'h','had')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['had']&&selectMatchMap[tabMatch.id]['had']['h']?'chose':''">
+															<span ng-if="tabMatch.had" ng-class="{'jclq-span':tabMatch.had.single=='0'&&isDan}">胜</span>
+															<em ng-bind="tabMatch.had?tabMatch.had.h:'-'"></em>
+														</td>
+														<td ng-click="!tabMatch.had ||tabMatch.had.single=='0'&&isDan || selectMatch(tabMatch.id,'d','had')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['had']&&selectMatchMap[tabMatch.id]['had']['d']?'chose':''">
+															<span ng-if="tabMatch.had" ng-class="{'jclq-span':tabMatch.had.single=='0'&&isDan}">平</span>
+															<em ng-bind="tabMatch.had?tabMatch.had.d:'-'"></em>
+														</td>
+														<td ng-click="!tabMatch.had ||tabMatch.had.single=='0'&&isDan || selectMatch(tabMatch.id,'a','had')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['had']&&selectMatchMap[tabMatch.id]['had']['a']?'chose':''">
+															<span ng-if="tabMatch.had" ng-class="{'jclq-span':tabMatch.had.single=='0'&&isDan}">负</span>
+															<em ng-bind="tabMatch.had?tabMatch.had.a:'-'"></em>
+														</td>
+														<td class="bet-dan" ng-show="m.had.single=='1'">单<br>关</td>
+													</tr>
+													<tr>
+														<td ng-click="!tabMatch.hhad ||tabMatch.hhad.single=='0'&&isDan || selectMatch(tabMatch.id,'h','hhad')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hhad']&&selectMatchMap[tabMatch.id]['hhad']['h']?'chose':''">
+															<span ng-if="tabMatch.hhad" ng-class="{'jclq-span':tabMatch.hhad.single=='0'&&isDan}">{{m.hhad.fixedodds}}胜</span>
+															<em ng-bind="tabMatch.hhad?tabMatch.hhad.a:'-'"></em>
+														</td>
+														<td ng-click="!tabMatch.hhad ||tabMatch.hhad.single=='0'&&isDan || selectMatch(tabMatch.id,'d','hhad')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hhad']&&selectMatchMap[tabMatch.id]['hhad']['d']?'chose':''">
+															<span ng-if="tabMatch.hhad" ng-class="{'jclq-span':tabMatch.hhad.single=='0'&&isDan}">{{m.hhad.fixedodds}}平</span>
+															<em ng-bind="tabMatch.hhad?tabMatch.hhad.d:'-'"></em>
+														</td>
+														<td ng-click="!tabMatch.hhad ||tabMatch.hhad.single=='0'&&isDan || selectMatch(tabMatch.id,'a','hhad')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hhad']&&selectMatchMap[tabMatch.id]['hhad']['a']?'chose':''">
+															<span ng-if="tabMatch.hhad" ng-class="{'jclq-span':tabMatch.hhad.single=='0'&&isDan}">{{m.hhad.fixedodds}}负</span>
+															<em ng-bind="tabMatch.hhad?tabMatch.hhad.a:'-'"></em>
+														</td>
+														<td class="bet-dan" ng-show="m.hhad.single=='1'">单<br>关</td>
+													</tr>
+												</table>
+											</td>
+			
+										</tr>
+									</table>
+								</div>
+								<div class="bet-list">
+									<table class="bet-bf">
+										<tr>
+											<th rowspan="7">比<br>分</th>
+											<td>
+												<table>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0100']?'chose':''" ng-click="selectMatch(tabMatch.id,'0100','crs')">
+															<span>1:0</span>
+															<em ng-bind="tabMatch.crs['0100']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0200']?'chose':''" ng-click="selectMatch(tabMatch.id,'0200','crs')">
+															<span>2:0</span>
+															<em ng-bind="tabMatch.crs['0200']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0201']?'chose':''" ng-click="selectMatch(tabMatch.id,'0201','crs')">
+															<span>2:1</span>
+															<em ng-bind="tabMatch.crs['0201']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0300']?'chose':''" ng-click="selectMatch(tabMatch.id,'0300','crs')">
+															<span>3:0</span>
+															<em ng-bind="tabMatch.crs['0300']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0301']?'chose':''" ng-click="selectMatch(tabMatch.id,'0301','crs')">
+															<span>3:1</span>
+															<em ng-bind="tabMatch.crs['0301']"></em>
+														</td>
+													</tr>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0302']?'chose':''" ng-click="selectMatch(tabMatch.id,'0302','crs')">
+															<span>3:2</span>
+															<em ng-bind="tabMatch.crs['0302']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0400']?'chose':''" ng-click="selectMatch(tabMatch.id,'0400','crs')">
+															<span>4:0</span>
+															<em ng-bind="tabMatch.crs['0400']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0401']?'chose':''" ng-click="selectMatch(tabMatch.id,'0401','crs')">
+															<span>4:1</span>
+															<em ng-bind="tabMatch.crs['0401']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0402']?'chose':''" ng-click="selectMatch(tabMatch.id,'0402','crs')">
+															<span>4:2</span>
+															<em ng-bind="tabMatch.crs['0402']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0500']?'chose':''" ng-click="selectMatch(tabMatch.id,'0500','crs')">
+															<span>5:0</span>
+															<em ng-bind="tabMatch.crs['0500']"></em>
+														</td>
+													</tr>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0501']?'chose':''" ng-click="selectMatch(tabMatch.id,'0501','crs')">
+															<span>5:1</span>
+															<em ng-bind="tabMatch.crs['0501']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0502']?'chose':''" ng-click="selectMatch(tabMatch.id,'0502','crs')">
+															<span>5:2</span>
+															<em ng-bind="tabMatch.crs['0502']"></em>
+														</td>
+														<td colspan="3" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-h']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-h','crs')">
+															<span>胜其他</span>
+															<em ng-bind="tabMatch.crs['-1-h']"></em>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td rowspan="7" class="bet-dan" ng-show="m.crs.single=='1'">单<br>关</td>
+										</tr>
+										<tr>
+											<td>
+												<table>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0000']?'chose':''" ng-click="selectMatch(tabMatch.id,'0000','crs')">
+															<span>0:0</span>
+															<em ng-bind="tabMatch.crs['0000']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0101']?'chose':''" ng-click="selectMatch(tabMatch.id,'0101','crs')">
+															<span>1:1</span>
+															<em ng-bind="tabMatch.crs['0101']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0202']?'chose':''" ng-click="selectMatch(tabMatch.id,'0202','crs')">
+															<span>2:2</span>
+															<em ng-bind="tabMatch.crs['0202']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0303']?'chose':''" ng-click="selectMatch(tabMatch.id,'0303','crs')">
+															<span>3:3</span>
+															<em ng-bind="tabMatch.crs['0303']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-d']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-d','crs')">
+															<span>平其他</span>
+															<em ng-bind="tabMatch.crs['-1-d']"></em>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<table>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0001']?'chose':''" ng-click="selectMatch(tabMatch.id,'0001','crs')">
+															<span>0:1</span>
+															<em ng-bind="tabMatch.crs['0001']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0002']?'chose':''" ng-click="selectMatch(tabMatch.id,'0002','crs')">
+															<span>0:2</span>
+															<em ng-bind="tabMatch.crs['0002']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0102']?'chose':''" ng-click="selectMatch(tabMatch.id,'0102','crs')">
+															<span>1:2</span>
+															<em ng-bind="tabMatch.crs['0102']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0003']?'chose':''" ng-click="selectMatch(tabMatch.id,'0003','crs')">
+															<span>0:3</span>
+															<em ng-bind="tabMatch.crs['0003']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0103']?'chose':''" ng-click="selectMatch(tabMatch.id,'0103','crs')">
+															<span>1:3</span>
+															<em ng-bind="tabMatch.crs['0103']"></em>
+														</td>
+													</tr>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0203']?'chose':''" ng-click="selectMatch(tabMatch.id,'0203','crs')">
+															<span>2:3</span>
+															<em ng-bind="tabMatch.crs['0203']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0004']?'chose':''" ng-click="selectMatch(tabMatch.id,'0004','crs')">
+															<span>0:4</span>
+															<em ng-bind="tabMatch.crs['0004']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0104']?'chose':''" ng-click="selectMatch(tabMatch.id,'0104','crs')">
+															<span>1:4</span>
+															<em ng-bind="tabMatch.crs['0104']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0204']?'chose':''" ng-click="selectMatch(tabMatch.id,'0204','crs')">
+															<span>2:4</span>
+															<em ng-bind="tabMatch.crs['0204']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0005']?'chose':''" ng-click="selectMatch(tabMatch.id,'0005','crs')">
+															<span>0:5</span>
+															<em ng-bind="tabMatch.crs['0005']"></em>
+														</td>
+													</tr>
+													<tr>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0105']?'chose':''" ng-click="selectMatch(tabMatch.id,'0105','crs')">
+															<span>1:5</span>
+															<em ng-bind="tabMatch.crs['0105']"></em>
+														</td>
+														<td ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['0205']?'chose':''" ng-click="selectMatch(tabMatch.id,'0205','crs')">
+															<span>2:5</span>
+															<em ng-bind="tabMatch.crs['0205']"></em>
+														</td>
+														<td colspan="3" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['crs']&&selectMatchMap[tabMatch.id]['crs']['-1-a']?'chose':''" ng-click="selectMatch(tabMatch.id,'-1-a','crs')">
+															<span>负其他</span>
+															<em ng-bind="tabMatch.crs['-1-a']"></em>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="bet-list">
+									<table class="bet-bf">
+										<tr>
+											<th rowspan="2">总<br>进<br>球</th>
+											<td>
+												<table>
+													<tr>
+														<td ng-click="selectMatch(tabMatch.id,'s0','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s0']?'chose':''">
+															<span>0</span>
+															<em ng-bind="tabMatch.ttg.s0"></em>
+														</td>
+														<td ng-click="selectMatch(tabMatch.id,'s1','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s1']?'chose':''">
+															<span>1</span>
+															<em ng-bind="tabMatch.ttg.s1"></em>
+														</td>
+														<td ng-click="selectMatch(tabMatch.id,'s2','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s2']?'chose':''">
+															<span>2</span>
+															<em ng-bind="tabMatch.ttg.s2"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'s3','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s3']?'chose':''">
+															<span>3</span>
+															<em ng-bind="tabMatch.ttg.s3"></em>
+														</td>
+													</tr>
+													<tr>
+														<td  ng-click="selectMatch(tabMatch.id,'s4','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s4']?'chose':''">
+															<span>4</span>
+															<em ng-bind="tabMatch.ttg.s4"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'s5','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s5']?'chose':''">
+															<span>5</span>
+															<em ng-bind="tabMatch.ttg.s5"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'s6','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s6']?'chose':''">
+															<span>6</span>
+															<em ng-bind="tabMatch.ttg.s6"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'s7','ttg')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['ttg']&&selectMatchMap[tabMatch.id]['ttg']['s7']?'chose':''">
+															<span>7+</span>
+															<em ng-bind="tabMatch.ttg.s7"></em>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td rowspan="2" class="bet-dan" ng-show="m.ttg.single=='1'">单<br>关</td>
+										</tr>
+									</table>
+								</div>
+								<div class="bet-list">
+									<table class="bet-bf">
+										<tr>
+											<th rowspan="2">半<br>全<br>场</th>
+											<td>
+												<table>
+													<tr>
+														<td  ng-click="selectMatch(tabMatch.id,'hh','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['hh']?'chose':''">
+															<span>胜胜</span>
+															<em ng-bind="tabMatch.hafu.hh"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'hd','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['hd']?'chose':''">
+															<span>胜平</span>
+															<em ng-bind="tabMatch.hafu.hd"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'ha','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ha']?'chose':''">
+															<span>胜负</span>
+															<em ng-bind="tabMatch.hafu.ha"></em>
+														</td>
+													</tr>
+													<tr>
+														<td  ng-click="selectMatch(tabMatch.id,'dh','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['dh']?'chose':''">
+															<span>平胜</span>
+															<em ng-bind="tabMatch.hafu.dh"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'dd','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['dd']?'chose':''">
+															<span>平平</span>
+															<em ng-bind="tabMatch.hafu.dd"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'da','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['da']?'chose':''">
+															<span>平负</span>
+															<em ng-bind="tabMatch.hafu.da"></em>
+														</td>
+													</tr>
+													<tr>
+														<td  ng-click="selectMatch(tabMatch.id,'ah','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ah']?'chose':''">
+															<span>负胜</span>
+															<em ng-bind="tabMatch.hafu.ah"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'ad','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['ad']?'chose':''">
+															<span>负平</span>
+															<em ng-bind="tabMatch.hafu.ad"></em>
+														</td>
+														<td  ng-click="selectMatch(tabMatch.id,'aa','hafu')" ng-class="selectMatchMap[tabMatch.id]&&selectMatchMap[tabMatch.id]['hafu']&&selectMatchMap[tabMatch.id]['hafu']['aa']?'chose':''">
+															<span>负负</span>
+															<em ng-bind="tabMatch.hafu.aa"></em>
+														</td>
+													</tr>
+												</table>
+											</td>
+											<td rowspan="3" class="bet-dan" ng-show="m.hafu.single=='1'">单<br>关</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</ion-scroll>
+					</div>
+					<div class="popup-buttons">
+						<button ng-click="removeSelect();">取消</button>
+						<button class="qr" ng-click="sureSelect()">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 筛选窗口 -->
+	<div ng-show="filterMacth">
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" ng-click="showBack()">返回</button>
+			<h2 class="title light">赛事筛选</h2>
+			<a class="button button-clear" ng-click="srueFilterMatch()">确定</a>
+		</div>
+		<!--subheader-->
+		<div class="bar bar-subheader text-center font12 bar-filter">
+			<div class="filter-btn padding row">
+				<button class="button col" ng-click="allSelect(1)">全选</button>
+				<button class="button col" ng-click="allSelect(2)">反选</button>
+				<!-- <button class="button col">五大联赛</button> -->
+			</div>
+			<div class="row filter-ss">
+				<p class="col text-left">共有<em>{{matchSize}}</em>场比赛</p>
+			</div>
+		</div>
+		<!--content-->
+		<div class="scroll-content has-header has-subheader has-bar-filter" overflow-scroll="true" >
+			<dd class="filter-box">
+				<div class="game" ng-class="{'chose':b=='1'}" ng-repeat="(l,b) in l_name_map" ng-click="selectLname(l)">{{l}}</div>
+				<div class="clearfix"></div>
+			</dd>
+		</div>
+	</div>
+	
+	<!-- 确认跟单 -->
+	<div ng-show="isFollowOrder">
+		<!--header-->
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" ng-click="backToSelectMacth()">返回</button>
+			<h1 class="title light">确认订单</h1>
+			<div class="buttons">
+				<a class="button button-clear" ng-click="showJjyh()">奖金优化</a>
+			</div>
+		</div>
+		<!--footer-->
+		<div class="bar bar-footer row dark-bg jc-next order-next" style="height: 70px;">
+			<div class="col col-75">
+				<p class="order-ye">店内余额：<span>{{userInfo.cashAmount}}元</span><a ui-sref="recharge">充值</a></p>
+				<p class="order-je">投注金额：<span>{{order.orderMoney}}元</span></p>
+				<p class="notice order-jj">预计奖金：<span>¥{{order.orderAwardMin}}-¥{{order.orderAwardMax}}</span></p>
+			</div>
+			<div class="col col-25 jc-next-btn order-next-btn">
+				<button class="button light-bg" style="font-size: 12px;" ng-click="sureorder()">确认投注</button>
+			</div>
+		</div>
+		<!--content-->
+		<div class="scroll-content has-header has-footer has-order-footer" overflow-scroll="true" style="">
+			<div class="bet-final-con light-bg">
+				<p class="row padding grey8 final-tit">
+					<span class="col text-left padding0">投注内容</span>
+					<span class="col text-right padding0">共<span>{{count}}</span>场比赛</span>
+				</p>
+				<div class="bet-info" ng-repeat="(n,mt) in showForOrder">
+					<div class="bet-info-del padding-left padding-right">
+						<span class="icon ion-ios-close-outline" ng-click="deleteSelectMacth(n)"></span>
+					</div>
+					<div class="bet-info-chose padding-right">
+						<div class="bet-info-team">
+							<em>{{jsonData[n].num}}</em>
+							<em>{{jsonData[n].h_cn_abbr}}</em>VS
+							<em>{{jsonData[n].a_cn_abbr}}</em>
+						</div>
+						<div class="bet-info-tz">
+							<em ng-repeat="(i,bet) in mt.bet">{{bet}}<u>{{mt.odds[i]}}</u></em>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			<div class="bet-final-gg light-bg">
+				<p class="padding grey8 final-tit">过关方式</p>
+				<p class="padding-left padding-right padding-bottom bet-gg-btns">
+					<button class="button" ng-class="{'chose':v=='1'}" ng-repeat="(k,v) in passway" ng-click="chosePassway(k)">{{k}}</button>
+				</p>
+			</div>
+			<div class="bet-final-bs light-bg">
+				<p class="padding grey8 final-tit">选择倍数</p>
+				<div class="bet-bs-btns padding-left padding-right padding-bottom">
+					<span>投</span>
+					<button class="ion-android-remove remove-btn" ng-click="addOrSub(1)"></button>
+					<p class="money"><input type="tel" maxlength="6" ng-model="order.betMul"   ng-keyup="limitNum()"></p>
+					<button class="ion-android-add add-btn" ng-click="addOrSub(2)"></button>
+					<span>倍</span>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<!-- 奖金优化 -->
+	<div ng-show="showJjyhTab">
+		<div class="bar bar-header red-gb">
+			<button class="button button-clear ion-ios-arrow-back" ng-click="backToFollowOrder()">返回</button>
+			<h1 class="title light">奖金优化</h1>
+		</div>
+		<!--subheader-->
+		<div class="bar bar-subheader bar-jjyh-header">
+			<div class="row yh-wf grey8">
+				<p class="col text-left">已选择<span>{{count}}</span>场比赛</p>
+				<p class="col text-right" ng-repeat="(k,v) in passway" ng-if="v==1">{{k}}</p>
+			</div>
+			<div class="yh-je">
+				<span>计划购买金额</span>
+				<button class="ion-android-remove remove-btn" ng-click="jjyhCalc(-1)"></button>
+				<p class="money"><input type="tel" maxlength="7" ng-model="order.orderMoneyJjyh" ng-blur="jjyhCalc()"></p>
+				<button class="ion-android-add add-btn"  ng-click="jjyhCalc(1)"></button>
+				<span>元</span>
+				<div class="clearfix"></div>
+			</div>
+			<div class="yh-buts padding text-center">
+				<button ng-class="jjyh.type=='avg'?'chose':''" ng-click="jjyhChange('avg')">平均优化</button>
+				<button ng-class="{'chose':jjyh.type=='hot','yh-buts-hui':jjyh.passway!=count}" ng-click="jjyh.passway!=count || jjyhChange('hot')">博热优化</button>
+				<button ng-class="{'chose':jjyh.type=='cold','yh-buts-hui':jjyh.passway!=count}" ng-click="jjyh.passway!=count || jjyhChange('cold')">博冷优化</button>
+			</div>
+			<div class="yj-tab-header">
+				<table>
+					<tr>
+						<td>单注组合</td>
+						<td>倍数</td>
+						<td>预测奖金</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<!--footer-->
+		<div class="bar bar-footer row dark-bg jc-next order-next" style="height: 70px;">
+			<div class="col col-75">
+				<p class="order-ye">店内余额：<span>{{userInfo.cashAmount}}元</span><a ui-sref="recharge">充值</a></p>
+				<p class="order-je">投注金额：<span>{{order.orderMoneyJjyh}}元</span></p>
+				<p class="notice order-jj">预计奖金：<span>¥{{order.orderAwardMin}}-¥{{order.orderAwardMax}}</span></p>
+			</div>
+			<div class="col col-25 jc-next-btn order-next-btn" style="margin-top: 0px;">
+				<button class="button light-bg" style="font-size: 12px;" ng-click="sureorder()">确认投注</button>
+			</div>
+		</div>
+		<!--content-->
+		<div class="scroll-content has-header has-order-footer has-jjyh-header" overflow-scroll="true" >
+			<table class="yh-table-con">
+				<tr ng-repeat="item in jjyhlist">
+					<td class="yh-team">
+						<div ng-if="itembet.name" ng-repeat="itembet in item"><span>{{itembet.pname}}</span>,<span>{{itembet.text}}</span>,<span>{{itembet.sp}}</span></div>
+					</td>
+					<td class="yh-bs">
+						<button class="ion-android-remove remove-btn" ng-click="jjyhChangebs(-1,item)"></button>
+						<p class="money"><input type="tel" max="6" ng-model="item.bs" ng-blur="jjyhChangebs('',item)"></p>
+						<button class="ion-android-add add-btn" ng-click="jjyhChangebs(1,item)"></button>
+						<div class="clearfix"></div>
+					</td>
+					<td class="yh-jj">
+						<div><span>{{item.prize==''?'0':item.prize}}</span>元</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<!-- 投注成功 -->
+	<!--popup-->
+	<div class="backdrop visible active" ng-show="betSuccess"></div>
+	<div class="popup-container popup-showing active popup-bet" ng-show="betSuccess">
+		<div class="popup">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding grey3">
+						<div class="col text-center">投注成功</div>
+					</div>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-notice">您已投注成功，店主正在火速出票</div>
+			</div>
+			<div class="popup-buttons">
+				<button class="qr single-btn" ng-click="kownForOrder();">我知道了</button>
+			</div>
+		</div>
+	</div>
+</div>

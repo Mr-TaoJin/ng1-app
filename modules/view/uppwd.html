@@ -1,0 +1,27 @@
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">修改密码</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true"  ng-controller="setupCtrl">
+	<ion-scroll>
+		<div class="list input-box">
+			<div class="item item-input">
+				<span>旧密码</span>
+				<input type="password" class="input" maxlength="16"  ng-model="pwd.oldpwd" placeholder="请输入旧密码"/>
+				<a  class="forget-pw" ui-sref="fgtpwd">忘记密码？</a>
+			</div>
+			<div class="item item-input">
+				<span>新密码</span>
+				<input type="password" class="input" maxlength="16" ng-model="pwd.newpwd" placeholder="请输入新密码"/>
+			</div>
+			<div class="item item-input">
+				<span>确认密码</span>
+				<input type="password" class="input" maxlength="16" ng-model="pwd.pwd2" placeholder="请再次输入新密码"/>
+			</div>
+		</div>
+		<div class="padding dlzc-btn">
+			<button class="button button-block red-gb light" ng-click="updatePwd()">确认修改</button>
+		</div>
+	</ion-scroll>
+</div>

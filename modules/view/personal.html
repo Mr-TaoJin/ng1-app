@@ -1,0 +1,57 @@
+<div class="scroll-content" overflow-scroll="true" ng-controller="personalCtrl">
+	<div class="money-box">
+		<div class="money-ye">
+			<div class="red-gb money-info">
+				<div class="money-avatar"><img ng-src="{{user.headImg}}"></div>
+				<div class="text-left light money-user">
+					<p>{{user.nickName}}</p>
+					<p class="money-zh">投注站余额<span>{{user.betAmount}}元</span></p>
+				</div>
+			</div>
+			<a href="个人中心-消息.html" class="money-news">
+				<img src="resources/img/img-message.png">
+			</a>
+			<div class="money-cztx row padding0">
+				<a  class="col col-50" ui-sref="recharge">
+					<span><img src="resources/img/img-cz.png"></span>店内充值
+				</a>
+				<a  class="col col-50"  ng-click="toCashOut()">
+					<span><img src="resources/img/img-tx.png"></span>店内提款
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="list center-list">
+		<a  class="item item-icon-left item-icon-right" ui-sref="betrecord">
+			<i class="icon ion-ios-list-outline"></i>
+			<p>我的方案</p>
+			<i class="icon ion-chevron-right"></i>
+		</a>
+		<a  class="item item-icon-left item-icon-right" ui-sref="myplan">
+			<i class="icon ion-ios-paper-outline"></i>
+			<p>我的计划</p>
+			<i class="icon ion-chevron-right"></i>
+		</a>
+		<a  class="item item-icon-left item-icon-right item-settings" ui-sref="buyrecord">
+			<i class="icon ion-ios-paper-outline"></i>
+			<p>资金流水</p>
+			<i class="icon ion-chevron-right"></i>
+		</a>
+		<a  class="item item-icon-left item-settings">
+			<i class="icon ion-ios-telephone-outline"></i>
+			<p class="row padding0">
+				<span class="col text-left padding0">联系客服</span>
+				<span class="col text-right padding0 greya">027-6666666</span>
+			</p>
+		</a>
+		<a  class="item item-icon-left item-icon-right" ui-sref="setup">
+			<i class="icon ion-ios-settings"></i>
+			<p>设置</p>
+			<i class="icon ion-chevron-right"></i>
+		</a>
+	</div>
+	<div class="padding dlzc-btn">
+		<button class="button button-block red-gb light" ng-click="logout()">退出登录</button>
+	</div>
+</div>
+<tab></tab>

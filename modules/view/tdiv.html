@@ -1,0 +1,190 @@
+
+<div class="backdrop visible active" ng-show="ishide">{{ishide}}</div>
+<div class="popup-container popup-showing active popup-bet" ng-show="ishide">
+		<div class="popup">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding grey3">
+						<div class="col text-right team02">{{match.h_cn_abbr}}</div>
+						<div class="col col-20 text-center vs">VS</div>
+						<div class="col text-left team02">{{match.a_cn_abbr}}</div>
+					</div>					
+				</h3>
+			</div>
+			<div class="popup-body">
+				<ion-scroll zooming="false" direction="y" class="scroll-view ionic-scroll">
+					<div class="scroll">
+						<table class="bet-bf">
+							<tr>
+								<th>胜</th>
+								<td>
+									<table>
+										<tr>
+											<td ng-class="crs['0100']" ng-click="chose('0100')">
+												<span>1:0</span>
+												<em>{{match.crs['0100']}}</em>
+											</td>
+											<td ng-class="crs['0200']" ng-click="chose('0200')">
+												<span>2:0</span>
+												<em>{{match.crs['0200']}}</em>
+											</td>
+											<td ng-class="crs['0201']" ng-click="chose('0201')">
+												<span>2:1</span>
+												<em>{{match.crs['0201']}}</em>
+											</td>
+											<td ng-class="crs['0300']" ng-click="chose('0300')">
+												<span>3:0</span>
+												<em>{{match.crs['0300']}}</em>
+											</td>
+											<td ng-class="crs['0301']" ng-click="chose('0301')">
+												<span>3:1</span>
+												<em>{{match.crs['0301']}}</em>
+											</td>
+										</tr>
+										<tr>
+											<td ng-class="crs['0302']" ng-click="chose('0302')">
+												<span>3:2</span>
+												<em>{{match.crs['0302']}}</em>
+											</td>
+											<td ng-class="crs['0400']" ng-click="chose('0400')">
+												<span>4:0</span>
+												<em>{{match.crs['0400']}}</em>
+											</td>
+											<td ng-class="crs['0401']" ng-click="chose('0401')">
+												<span>4:1</span>
+												<em>{{match.crs['0401']}}</em>
+											</td>
+											<td  ng-class="crs['0402']" ng-click="chose('0402')">
+												<span>4:2</span>
+												<em>{{match.crs['0402']}}</em>
+											</td>
+											<td  ng-class="crs['0500']" ng-click="chose('0500')">
+												<span>5:0</span>
+												<em>{{match.crs['0500']}}</em>
+											</td>
+										</tr>
+										<tr>
+											<td  ng-class="crs['0501']" ng-click="chose('0501')">
+												<span>5:1</span>
+												<em>{{match.crs['0501']}}</em>
+											</td>
+											<td  ng-class="crs['0502']" ng-click="chose('0502')">
+												<span>5:2</span>
+												<em>{{match.crs['0502']}}</em>
+											</td  ng-class="crs['0200']" ng-click="chose('0200')">
+											<td colspan="3"  ng-class="crs['-1-h']" ng-click="chose('-1-h')">
+												<span>胜其他</span>
+												<em>{{match.crs['-1-h']}}</em>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						<table class="bet-bf">
+							<tr>
+								<th>平</th>
+								<td>
+									<table>
+										<tr>
+											<td ng-class="crs['0000']" ng-click="chose('0000')">
+												<span>0:0</span>
+												<em>{{match.crs['0000']}}</em>
+											</td>
+											<td ng-class="crs['0101']" ng-click="chose('0101')">
+												<span>1:1</span>
+												<em>{{match.crs['0101']}}</em>
+											</td>
+											<td ng-class="crs['0202']" ng-click="chose('0202')">
+												<span>2:2</span>
+												<em>{{match.crs['0202']}}</em>
+											</td>
+											<td ng-class="crs['0303']" ng-click="chose('0303')">
+												<span>3:3</span>
+												<em>{{match.crs['0303']}}</em>
+											</td>
+											<td ng-class="crs['-1-d']" ng-click="chose('-1-d')">
+												<span>平其它</span>
+												<em>{{match.crs['-1-d']}}</em>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						<table class="bet-bf">
+							<tr>
+								<th>负</th>
+								<td>
+									<table>
+										<tr>
+											<td ng-class="crs['0001']" ng-click="chose('0001')">
+												<span>0:1</span>
+												<em>{{match.crs['0001']}}</em>
+											</td>
+											<td ng-class="crs['0002']" ng-click="chose('0002')">
+												<span>0:2</span>
+												<em>{{match.crs['0002']}}</em>
+											</td>
+											<td ng-class="crs['0102']" ng-click="chose('0102')">
+												<span>1:2</span>
+												<em>{{match.crs['0102']}}</em>
+											</td>
+											<td ng-class="crs['0003']" ng-click="chose('0003')">
+												<span>0:3</span>
+												<em>{{match.crs['0003']}}</em>
+											</td>
+											<td ng-class="crs['0103']" ng-click="chose('0103')">
+												<span>1:3</span>
+												<em>{{match.crs['0103']}}</em>
+											</td>
+										</tr>
+										<tr>
+											<td ng-class="crs['0203']" ng-click="chose('0203')">
+												<span>2:3</span>
+												<em>{{match.crs['0203']}}</em>
+											</td>
+											<td ng-class="crs['0004']" ng-click="chose('0004')">
+												<span>0:4</span>
+												<em>{{match.crs['0004']}}</em>
+											</td>
+											<td ng-class="crs['0104']" ng-click="chose('0104')">
+												<span>1:4</span>
+												<em>{{match.crs['0104']}}</em>
+											</td>
+											<td ng-class="crs['0204']" ng-click="chose('0204')">
+												<span>2:4</span>
+												<em>{{match.crs['0204']}}</em>
+											</td>
+											<td ng-class="crs['0005']" ng-click="chose('0005')">
+												<span>0:5</span>
+												<em>{{match.crs['0005']}}</em>
+											</td>
+										</tr>
+										<tr>
+											<td ng-class="crs['0105']" ng-click="chose('0105')">
+												<span>1:5</span>
+												<em>{{match.crs['0105']}}</em>
+											</td>
+											<td ng-class="crs['0205']" ng-click="chose('0205')">
+												<span>2:5</span>
+												<em>{{match.crs['0205']}}</em>
+											</td>
+											<td colspan="3" ng-class="crs['-1-a']" ng-click="chose('-1-a')">
+												<span>负其他</span>
+												<em>{{match.crs['-1-a']}}</em>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</ion-scroll>
+			</div>
+			<div class="popup-buttons">
+				<button ng-click="removeTab()">取消</button>
+				<button class="qr" ng-click="sureTab();">确认</button>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,193 @@
+<!--header-->
+<div class="bar bar-header red-gb">
+	<!--<button class="button button-clear ion-ios-arrow-back">返回</button>-->
+	<h2 class="title light">购买彩票</h2>
+</div>
+<!--footer-->
+<!--content-->
+<div class="scroll-content has-header has-footer" overflow-scroll="true" ng-controller="indexCtrl">
+	<ion-scroll>
+		<!--silde-->
+		<ion-slide-box class="slider" active-slide="model.activeIndex" does-continue="true" slide-interval="3000" auto-play="true" show-pager="true" pager-click="toSlideIndex(index)" on-tap="stopOrStart()">
+			<ion-slide ng-repeat="(k,v) in banner">
+				<!-- <a ng-if="v.url&&v.url!=null" ui-sref="v.url"><img ng-src="{{v.imageAttr.substring(1)}}"/></a>    -->
+				<a href="#"><img src="resources/img/banner.jpg"></a><!--轮播图样式，上线使用上面图形-->
+				<!--<a ng-if="!v.url||v.url==null"><img ng-src="{{v.imageAttr.substring(1)}}"/></a>-->
+			</ion-slide>
+		</ion-slide-box>
+		<div class="tz-container">
+			<p><img src="resources/img/gczq.png">购彩专区</p>
+		</div>
+		<div class="profit-container">
+			<div class="row text-center">
+				<span class="col">
+					<img src="resources/img/jczq.png">
+					<p>竞彩足球</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/jclq.png">
+					<p>竞彩篮球</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/sfc.png">
+					<p>胜负彩</p>
+				</span>
+			</div>
+			<div class="row text-center middle">
+				<span class="col">
+					<img src="resources/img/rx9.png">
+					<p>任选九</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/dlt.png">
+					<p>大乐透</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/pl3.png">
+					<p>排列三</p>
+				</span>
+			</div>
+			<div class="row text-center">
+				<span class="col">
+					<img src="resources/img/pl5.png">
+					<p>排列五</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/xc.png">
+					<p>七星彩</p>
+				</span>
+				<span class="col">
+					<img src="resources/img/gpc.png">
+					<p>高频彩</p>
+				</span>
+			</div>
+		</div>
+
+		<div class="lottery-container clear">
+			<div class="check" ui-sref="score">
+				<img src="resources/img/kjcx.png">
+				开奖查询<span class="mini">准确&nbsp;及时</span>
+			</div>
+			<div class="plan" ui-sref="plan">
+				<img src="resources/img/yljh.png">
+				盈利计划<span class="mini">低风险&nbsp;高收益</span>
+			</div>
+		</div>
+	</ion-scroll>
+	<!--popup-->
+<div class="backdrop visible active" ng-show="showPlanTab"></div>
+<div class="popup-container popup-showing active popup-bet popup-his-plan" ng-show="showPlanTab">
+	<div class="popup">
+		<div class="popup-item">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding light">
+						<div class="col text-center">
+							<span class="padding-right">第<span>{{planDetail.issueNo}}</span>期</span>
+							<span>计划盈利<span>{{planDetail.price}}</span>元</span>
+						</div>
+					</div>
+					<p class="profit-plan-num">第<span>{{planDetail.index+1}}</span>单</p>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="profit-plan-con">
+					<table border="0" cellspacing="0" cellpadding="0" ng-repeat="pd in planDetail.bet.contentJson">
+						<tr>
+							<th colspan="5">
+								<span class="text-left">{{pd.h_cn_abbr}}</span>
+								<span class="score">{{pd.score!=null?pd.score:'-'}}</span>
+								<span class="text-right">{{pd.a_cn_abbr}}</span>
+							</th>
+						</tr>
+						<tr>
+							<td rowspan="2">
+								<span>{{pd.bno_cn}}</span>
+								<span>{{pd.league_name}}</span>
+								<span>{{pd.match_start_time.substring(11,16)}}</span>
+							</td>
+							<td>0</td>
+							<td ng-class="{'chose':pd.bet=='3','result':pd.winBet=='3'}">胜<u>{{pd.had.h}}</u></td>
+							<td ng-class="{'chose':pd.bet=='1','result':pd.winBet=='1'}">平<u>{{pd.had.d}}</u></td>
+							<td ng-class="{'chose':pd.bet=='0','result':pd.winBet=='0'}">负<u>{{pd.had.a}}</u></td>
+						</tr>
+						<tr>
+							<td class="rang">{{pd.hhad.fixedodds}}</td>
+							<td ng-class="{'chose':pd.bet=='r3','result':pd.winBet=='r3'}">胜<u>{{pd.hhad.h}}</u></td>
+							<td ng-class="{'chose':pd.bet=='r1','result':pd.winBet=='r1'}">平<u>{{pd.hhad.d}}</u></td>
+							<td ng-class="{'chose':pd.bet=='r0','result':pd.winBet=='r0'}">负<u>{{pd.hhad.a}}</u></td>
+						</tr>
+					</table>
+				</div>
+				<div class="profit-plan-yl">
+					<table border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td>本次投入</td>
+							<td>累计投入</td>
+							<td>奖金</td>
+						</tr>
+						<tr>
+							<td>{{planDetail.bet.betMoney}}</td>
+							<td>{{planDetail.ljMoney}}</td>
+							<td>{{planDetail.awardMoney!=null?planDetail.awardMoney:'-'}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="popup-buttons">
+				<button class="single-btn" ng-click="showPlanTab=false;">关闭查看</button>
+			</div>
+			<div class="plan-final" ng-if="planDetail.bet.winStatus=='0'">
+				<img src="resources/img/img-wtz.png">
+			</div>
+			<div class="plan-final" ng-if="planDetail.bet.winStatus=='1'">
+				<img src="resources/img/img-tz.png">
+			</div>
+		</div>
+	</div>
+	<a  class="popup-controller left" ng-click="showPlanDeatil(planDetail.index-1)"><img src="resources/img/img-arrow-left.png"></a>
+	<a  class="popup-controller right" ng-click="showPlanDeatil(planDetail.index+1)"><img src="resources/img/img-arrow-right.png"></a>
+</div>
+<!--popup-->
+<div class="backdrop visible active" ng-show="showPayTab"></div>
+<div class="popup-container popup-showing active popup-bet profit-pay"  ng-show="showPayTab">
+	<div class="popup">
+		<div class="popup-head">
+			<h3 class="popup-title">
+				<div class="row padding grey3">
+					<div class="col text-center">需支付金额<span>{{pay}}</span></div>
+				</div>
+			</h3>
+		</div>
+		<div class="popup-buttons">
+			<button ng-click="payForZfb()"><img src="resources/img/img-zfb.png">支付宝支付</button>
+			<button ng-click="parForWx()"><img src="resources/img/img-wx.png">微信支付</button>
+		</div>
+	</div>
+	<form action="/alipay/createAlipayTimelyOrderApp" method="POST" id="formTab" style="display: none;">
+		<input id="issueId" type="text" name="issueId"/>
+	</form>
+</div>	
+<!--popup-->
+<div class="backdrop visible active" ng-show="payTips"></div>
+<div class="popup-container popup-showing active popup-bet" ng-show="payTips">
+	<div class="popup">
+		<div class="popup-head">
+			<h3 class="popup-title">
+				<div class="row padding grey3">
+					<div class="col text-center">支付提示</div>
+				</div>
+			</h3>
+		</div>
+		<div class="popup-body">
+			<div class="popup-notice">是否完成支付？</div>
+		</div>
+		<div class="popup-buttons">
+			<button ng-click="closePayTab()">支付失败</button>
+			<button class="qr" ng-click="closePayTab()">已支付</button>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+<tab></tab>

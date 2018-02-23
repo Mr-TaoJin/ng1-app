@@ -1,0 +1,20 @@
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">选择账户类型</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true" ng-controller="setupCtrl">
+	<div class="account-container">
+		<div class="account-con row">
+			<dd class="col padding" ng-class="{'chose':type==1}" ng-click="choseType(1)"><img src="resources/img/img-zfb.png">支付宝</dd>
+			<dd class="col padding" ng-class="{'chose':type==2}" ng-click="choseType(2)"><img src="resources/img/img-card.png">银行卡</dd>
+		</div>
+	</div>
+	<div class="padding dlzc-btn">
+		<button class="button button-block red-gb light" ng-click="next()">下一步</button>
+	</div>
+	<div class="padding grey8">
+		<p>绑定说明：</p>
+		<p>绑定成功后，不可修改，请绑定正确的收款账号</p>
+	</div>
+</div>

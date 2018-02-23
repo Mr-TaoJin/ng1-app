@@ -1,0 +1,29 @@
+<div class="bar bar-header red-gb">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title light">申请提款</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header tx-container" overflow-scroll="true" ng-controller="cashoutCtrl">
+	<div class="tx-box">
+		<p>可提款金额<span>{{user.cashAmount}}</span></p>
+		<a ng-click="allCashout();">全部提现</a>
+	</div>
+	<div class="list input-box">
+		<div class="item item-input">
+			<span>提款金额</span>
+			<input type="number" maxlength="9" ng-model="user.money" class="input" placeholder="请输入提款金额"/>
+		</div>
+		<div class="item item-input">
+			<span>收款支付宝</span>
+			<input type="text" class="input"  ng-if="user.alipayId&&user.alipayId!=''" ng-model="user.alipayId" disabled="disabled"/>
+			<input type="text" class="input" ng-if="user.bankCardId&&user.bankCardId!=''" ng-model="user.bankCardId" disabled="disabled"/>
+		</div>
+	</div>
+	<div class="padding dlzc-btn">
+		<button class="button button-block red-gb light" ng-click="cashoutToUser()">提交</button>
+	</div>
+	<div class="contact-bot">
+		<p>如提款未及时到账</p>
+		<p>请联系店主：<span>15007142244</span></p>
+	</div>
+</div>

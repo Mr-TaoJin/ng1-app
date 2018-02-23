@@ -1,0 +1,48 @@
+<div class="bar bar-header black-gb">
+    <button class="button button-clear ion-ios-arrow-back" histroy>返回</button>
+    <h1 class="title light">提现</h1>
+</div>
+<div class="scroll-content has-header" overflow-scroll="true">
+    <ion-scroll ng-controller="withdrawalCtrl">
+        <div class="topup">
+            <div class="topup-top">
+                <p>这里是文字内容，这里是文字内容，这里是文字内容，这里是文字内容
+                </p>
+            </div>
+            <div class="list withdrawal-middle clear">
+                <div class="item">
+                    <span class="je">金额（¥）</span>
+                    <span><input type="text" placeholder="请输入提现金额"></span>
+                </div>
+            </div>
+            <div class="withdrawal-add">
+                可提现余额 ¥<span>99.9</span>
+                <button class="all-withdraw">全部提现</button>
+            </div>
+            <div class="topup-content">
+                <ul class="list">
+                    <li class="item clear">
+                        <label class="checkbox">
+                            <input type="checkbox" checked="true">
+                        </label>
+                        <img src="resources/img/management/weixin-logo.png">
+                        <span class="transfer">
+                            <p class="wx">微信转账</p>
+                            <p class="merchants">我的微信账号：<span>xx123456</span></p>
+                        </span>
+                    </li>
+                    <li class="item clear">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                        </label>
+                        <img src="resources/img/management/zfb-logo.png">
+                        <span class="transfer">
+                            <p class="wx">支付宝转账</p>
+                            <p class="merchants">我的支付宝账号：<span>xx123456</span></p>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ion-scroll>
+</div>

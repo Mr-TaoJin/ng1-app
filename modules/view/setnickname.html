@@ -1,0 +1,24 @@
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back">返回</button>
+	<h1 class="title">完善资料</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true" ng-controller="setnicknameCtrl">
+	<ion-scroll>
+		<div class="upload-avatar">
+			<div class="user-avatar" ng-show="user.uploadImg!=''">
+				<img ng-src="{{user.uploadImg}}">
+			</div>
+			<button class="button button-clear light-bg" ngf-select ng-model="file" name="file" ngf-pattern="'image/*" accept="image/*" ngf-max-size="20MB" ngf-min-height="100">上传头像</button>
+		</div>
+		<div class="list input-box">
+			<div class="item item-input">
+				<span>昵称</span>
+				<input type="text" class="input" ng-model="user.nickname" placeholder="请设置您的昵称"/>
+			</div>
+		</div>
+		<div class="padding dlzc-btn">
+			<button class="button button-block red-gb light" ng-click="tohomePage()">进入首页</button>
+		</div>
+	</ion-scroll>
+</div>

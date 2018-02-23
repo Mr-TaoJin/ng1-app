@@ -1,0 +1,107 @@
+<!--header-->
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">店铺推荐</h1>
+	<a class="button button-clear icon ion-ios-home" ui-sref="shopping"></a>
+	<!--<a class="button button-clear icon ion-information-circled"></a>-->
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true">
+	<ion-scroll ng-controller="recommendendCtrl">
+		<div class="recommend">
+			<div class="row text-center recommend-head ">
+				<div class="col" ui-sref="recommending">进行中</div>
+				<div class="col tab-active" ui-sref="recommendend">已结束</div>
+			</div>
+			<div class="sevenData">
+				<table>
+					<tr>
+						<td rowspan="2" class="seven">7天数据</td>
+						<td>18</td>
+						<td>18</td>
+						<td>123%</td>
+					</tr>
+					<tr>
+						<td>方案</td>
+						<td>中奖</td>
+						<td>回报</td>
+					</tr>
+				</table>
+			</div>
+			<div class="recommend-content">
+				<div>
+					<p class="time">截止时间  12-11-15:55</p>
+					<div class="middle clear">
+						<div class="multi-top">
+							<p><span class="multi">7.89</span>&nbsp;倍</p>
+							<p>预计回报</p>
+						</div>
+						<div class="line">
+							<img src="resources/img/jczq-logo.png">
+						</div>
+						<div class="planDetail">
+							<table class="text-center">
+								<thead>
+									<tr>
+										<th>方案内容</th>
+										<th>单倍金额</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>竞足4串3</td>
+										<td>8元</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row checkDetail">
+						<div class="col">14人已跟投</div>
+						<div class="col text-right details">
+							<button ui-sref="details">查看详情</button>
+						</div>
+					</div>
+				</div>
+				<img src="resources/img/zj.png">
+			</div>
+			<div class="recommend-content">
+				<div>
+					<p class="time">截止时间  12-11-15:55</p>
+					<div class="middle clear">
+						<div class="multi-top">
+							<p><span class="multi">7.89</span>&nbsp;倍</p>
+							<p>预计回报</p>
+						</div>
+						<div class="line">
+							<img src="resources/img/jclq-logo.png">
+						</div>
+						<div class="planDetail text-right">
+							<table class="text-center">
+								<thead>
+								<tr>
+									<th>方案内容</th>
+									<th>单倍金额</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>竞足4串3</td>
+									<td>8元</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row checkDetail">
+						<div class="col">14人已跟投</div>
+						<div class="col text-right details">
+							<button>查看详情</button>
+						</div>
+					</div>
+				</div>
+				<img src="resources/img/wz.png">
+			</div>
+		</div>
+	</ion-scroll>
+</div>

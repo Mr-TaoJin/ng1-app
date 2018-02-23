@@ -1,0 +1,22 @@
+<div class="bar bar-header red-gb user-dlzx">
+	<button class="button button-clear ion-ios-arrow-back" histroy></button>
+	<h1 class="title">填写邀请码</h1>
+</div>
+<!--content-->
+<div class="scroll-content has-header" overflow-scroll="true">
+	<ion-scroll  ng-controller="invitationCtrl">
+		<div class="yqm-box">
+			<p>请输入4位数邀请码</p>
+			<div class="yqm row" id="fourInput">
+				<input type="tel" maxlength="1" ng-model="one" ng-keyup="tonext('one',1)" class="col"/>
+				<input type="tel" maxlength="1" ng-model="two" ng-keyup="tonext('two',2)" class="col"/>
+				<input type="tel" maxlength="1" ng-model="three" ng-keyup="tonext('three',3)" class="col"/>
+				<input type="tel" maxlength="1" ng-model="four" ng-keyup="tonext()" class="col"/>
+			</div>
+			<div class="padding dlzc-btn yqm-btn">
+				<button class="button button-block red-gb light" ng-click="sureToReg();">确定</button>
+			</div>
+			<a href="#">如何获取邀请码？</a>
+		</div>
+	</ion-scroll>	
+</div>

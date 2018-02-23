@@ -1,0 +1,605 @@
+/*===========shopping=============*/
+.user-msg{
+    background:#ffffff;
+    margin-bottom:8px;
+}
+.user-msg p{
+    font-size: 12px;
+    color:#b9b9b9;
+}
+.user-msg .image img{
+    width:90px;
+}
+.user-msg .message{
+    padding:10px;
+}
+.user-msg .store-name{
+    font-size: 16px;
+    font-weight: bold;
+    color:#000;
+}
+.user-msg .redColor{
+    color:#e13939;
+}
+
+
+.user-store{
+    color:#b9b9b9;
+    background: #ffffff;
+    font-size: 12px;
+    border-top:1px solid transparent;
+}
+.user-store img{
+    width:20px;
+    margin-top: -5px;
+}
+.user-store .weight{
+    font-size: 16px;
+    font-weight:bold;
+    color:#000;
+    margin-left: 5px;
+}
+.user-store .store-tj .tj,
+.user-store .store-hd .hd{
+    display:inline-block;
+    margin-top: 5px;
+}
+.realNews{
+    margin-top: 10px;
+}
+.realNews .real-msg{
+    background: #ffffff;
+    font-size:16px;
+    padding:10px 5px 10px 10px;
+    margin-bottom:15px;
+}
+.realNews .real-msg img{
+    width:18px;
+    margin-right:10px;
+}
+.realNews .real-msg .gray-color{
+    color:#b9b9b9;
+    margin-top: 10px;
+}
+.realNews .real-msg>div:last-child{
+    padding:14px 0px;
+}
+
+/*================recommending===============*/
+.recommend{
+    font-size: 14px;
+}
+.recommend .recommend-head{
+    background:#ffffff;
+    font-size:18px;
+    padding:0px;
+}
+.recommend .recommend-head>div{
+    padding:10px;
+}
+.recommend .recommend-content{
+    margin-top:10px;
+    background:#ffffff;
+    padding:10px;
+    position: relative;
+}
+.recommend .recommend-head .tab-active{
+    border-bottom:2px solid red;
+}
+.recommend-content .time{
+    color:#b9b9b9;
+}
+.recommend-content .multi{
+    color:red;
+    font-size:18px;
+    margin-bottom:5px;
+}
+.recommend-content p:last-child{
+    font-size: 13px;
+    font-weight: 600;
+}
+.recommend-content .planDetail{
+    padding:10px 0px 10px 30px;
+}
+.recommend-content .planDetail table{
+    width:100%;
+}
+.recommend-content .planDetail table th{
+    width: 35%;
+    background:#909090;
+    color:#ffffff;
+    padding:5px 0px;
+    border:1px solid #ffffff;
+}
+.recommend-content .planDetail table td{
+    border:1px solid #ffffff;
+    background:#f0f0f0;
+    padding:5px 0px;
+}
+.recommend-content .middle{
+    border-bottom:2px solid #f0f0f0;
+}
+.recommend-content .middle div{
+    float:left;
+}
+.recommend-content .middle .multi-top{
+    padding:20px 20px 20px 20px;
+}
+.recommend-content .middle .line{
+    width:36px;
+    height:50px;
+    border-left:1px solid #f0f0f0;
+    margin-top: 17px;
+}
+.recommend-content .line img{
+    width:40px;
+    position: absolute;
+    top:50px;
+    left:40%;
+}
+.recommend-content>img{
+    width:60px;
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+.recommend-content .checkDetail div:first-child{
+    color:#b9b9b9;
+}
+.recommend-content .checkDetail .details button{
+    width:100px;
+    color:#ffffff;
+    background: #f44b4b;
+    border:0px;
+    border-radius:10px;
+}
+.recommend .sevenData{
+    background:#ffffff;
+    margin-top: 10px;
+}
+.recommend .sevenData table td{
+    width:12%;
+    text-align:center;
+    padding:3px 0px;
+    vertical-align:middle;
+}
+.recommend .sevenData table tr:first-child{
+    font-size: 16px;
+    font-weight: 500;
+}
+.recommend .sevenData table tr:last-child{
+    color:#b9b9b9;
+}
+.recommend .sevenData td.seven{
+    background:#f44b4b;
+    color:#ffffff;
+    box-sizing:border-box;
+}
+
+.activity{
+    font-size: 14px;
+}
+.activity .activity-head{
+    background:#ffffff;
+    font-size:18px;
+    padding:0px;
+    margin-bottom: 10px;
+}
+.activity .activity-head .tab-active{
+    border-bottom: 2px solid red;
+}
+.activity .activity-head>div{
+    padding:10px;
+}
+.activity-content{
+    padding:10px;
+    background:#ffffff;
+    position:relative;
+    margin-bottom: 10px;
+}
+.activity-content .conLeft img{
+    width:90px;
+}
+.activity-content .conLeft,
+.activity-content .conRight{
+    float:left;
+}
+.activity-content .conLeft{
+    width:30%;
+}
+.activity-content .conRight{
+    width:70%;
+    white-space:normal;
+    color:#b9b9b9;
+}
+.activity-content .conRight .title{
+    font-size:15px;
+    font-weight: bold;
+    color:#000;
+}
+.activity-content>img{
+    width:70px;
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+/*plan-details*/
+.planDetails{
+    font-size: 14px;
+    margin-top:10px;
+    background-color:#ffffff ;
+}
+.planDetails table{
+    width:100%;
+}
+.planDetails table th{
+    font-size: 16px;
+    padding:10px 0px;
+}
+.planDetails table th:first-child{
+    width:25%;
+}
+.planDetails table th:nth-child(2){
+    width:35%;
+}
+.planDetails table th:nth-child(3),
+.planDetails table th:nth-child(4){
+    width:20%;
+}
+.planDetails table td{
+    vertical-align:middle;
+    font-size: 12px;
+    border:1px solid #eeeeee;
+    padding:10px 0px;
+}
+.planDetails table .win{
+    color:red;
+}
+.planDetails .species{
+    padding:5px 0px;
+}
+.planDetails .species img{
+    max-width:40px;
+    margin: 0px 6%;
+}
+.details-footer .redColor,
+.planDetails .species .redColor{
+    color:red;
+    margin:0px 5px;
+    font-size:16px;
+}
+.details-footer{
+    width:100%;
+    min-height:50px;
+    position: absolute;
+    bottom:0px;
+    left: 0px;
+    background-color:#ffffff;
+}
+.details-footer .counts,
+.details-footer .gendan{
+    float:left;
+    height:50px;
+    line-height: 50px;
+}
+.details-footer .counts{
+    width:70%;
+    font-size: 18px;
+}
+.details-footer .gendan{
+    width:30%;
+    font-size: 18px;
+    background: #f54b4c;
+    color:#ffffff;
+}
+.details-footer .counts input{
+    display: inline-block;
+    width:10%;
+    text-align:center;
+}
+    /*===================personal-center=====================*/
+.personal-center{
+    font-size: 14px;
+}
+.center-head{
+    height:230px;
+    position:relative;
+}
+.center-head .back-top{
+    width:100%;
+    height: 120px;
+    background:#f44b4b;
+}
+.center-head .msg-container{
+    width:80%;
+    height:150px;
+    background: #ffffff;
+    position:absolute;
+    top:70px;
+    left:10%;
+    border-radius:8px;
+    padding:10px;
+}
+.center-head .msg-container>img{
+    width:90px;
+    border-radius: 50%;
+    position: absolute;
+    top:-45px;
+    left:35%;
+}
+.center-head .msg-container .user-name{
+    padding:45px 10px 15px 10px;
+    border-bottom:1px solid #f0f0f0;
+    font-size: 17px;
+    font-weight: 600;
+}
+.center-head .msg-container .store-msg img{
+    width:20px;
+}
+.center-head .msg-container .store-msg table td{
+    vertical-align:middle;
+    width:33%;
+    font-size: 12px;
+}
+.center-head .msg-container .store-msg .money{
+    border-right:1px solid #bfbfbf;
+    text-align: center;
+}
+.center-head .msg-container .store-msg .redColor{
+    color:red;
+    font-size: 15px;
+}
+
+.center-container{
+    background: #ffffff;
+}
+.center-container .list .title{
+    font-size:18px;
+    font-weight: 300;
+}
+.center-container .list .icon{
+    color:#dfdfdf;
+    font-size: 20px;
+}
+.center-container .list img{
+    width:20px;
+    margin-right: 30px;
+}
+/*====================setdata=======================*/
+.setdata{
+    font-size: 14px;
+    margin-top:10px; ;
+}
+.setdata .title{
+    font-size: 18px;
+    font-weight:300;
+}
+.setdata .setContent{
+    float:right;
+}
+.setdata .setContent img{
+    width:50px;
+}
+.setdata .item .icon{
+    color:#dfdfdf;
+    font-size: 20px;
+}
+.setdata .set-img{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+/*===================setname=================*/
+.setname{
+    margin-top:20px;
+}
+.setname .item input{
+    font-size: 16px;
+}
+.setname .fail-clear{
+    margin-right:20px;
+    font-size: 24px;
+}
+/*==================settel=============*/
+.settel{
+    font-size: 14px;
+}
+/*.settel .prompt{*/
+    /*padding:10px;*/
+/*}*/
+.settel p{
+    white-space:normal;
+    font-size:12px;
+}
+.setname .item .input-label,
+.settel .item .input-label{
+    font-weight:600;
+}
+.settel .item .tel-input{
+    margin-left: -30px;
+}
+.settel .code{
+    background: red;
+    color: #ffffff;
+    border:0px;
+    border-radius: 5px;
+    padding:5px;
+    position:absolute;
+    bottom:10px;
+    right:25px;
+    z-index:500;
+}
+
+/*=====================goldManagemen=================*/
+.goldManagement{
+    font-size: 16px;
+}
+.goldManagement .manage-top{
+    position:relative;
+}
+.goldManagement .manage-top>img{
+    width:100%;
+}
+.goldManagement .manage-top .count{
+    position: absolute;
+    top:40px;
+    color:#ffffff;
+}
+.goldManagement .manage-top .count .tz-tx{
+    font-size:28px;
+    margin-top:20px;
+}
+.manage-middle{
+    background: #ffffff;
+}
+.manage-middle>div:first-child{
+    border-right: 1px solid #bfbfbf;
+}
+.manage-middle img{
+    width:45px;
+    margin-right: 5%;
+}
+.manage-middle span{
+    font-size: 20px;
+    font-weight: 600;
+}
+.manage-content img{
+    width:16px;
+    margin-right: 10px;
+}
+.manage-content table{
+    width:100%;
+}
+.manage-content table td{
+    width:50%;
+    padding:3px;
+    color:#646464;
+}
+.manage-content .top-up{
+    font-size: 18px;
+    color:#000;
+}
+.manage-content .red{
+    color:red;
+}
+/*==============topup============*/
+.topup{
+    font-size:14px;
+}
+.topup .topup-top{
+    white-space:normal;
+    padding:10px 15px;
+}
+.topup .topup-middle{
+    font-size:18px;
+    padding:15px 15px;
+    background: #ffffff;
+}
+.topup .topup-content{
+    margin-top: 10px;
+    background: #ffffff;
+}
+.topup .topup-content label,
+.topup .topup-content img,
+.topup .topup-content .transfer{
+    float:left;
+}
+.topup .topup-content .transfer{
+    margin-left:20px;
+}
+.topup .topup-content label{
+    margin-right:20px;
+}
+.topup .topup-content img{
+    max-width:40px;
+}
+.topup .topup-content .transfer .wx{
+    font-size: 16px;
+    font-weight: 600;
+}
+.topup .topup-content .transfer .merchants{
+    font-size: 12px;
+}
+.topup .withdrawal-middle{
+    margin-bottom:10px;
+}
+.topup .withdrawal-middle span{
+    float:left;
+}
+.topup .withdrawal-middle .je{
+    font-size: 18px;
+    margin-top:7px;
+    margin-right:10px;
+    color:#000;
+}
+.topup .withdrawal-add{
+    padding:0 15px;
+}
+.topup .withdrawal-add .all-withdraw{
+    margin-left:10px;
+    color:#eaab00;
+    border:0px;
+    background: #f5f5f5;
+}
+
+/*================my-envelope===============*/
+.myEnvelope{
+    padding:10px;
+    font-size: 14px;
+}
+.myEnvelope .envolpe-content{
+    background:#ffffff;
+    border-radius:6px;
+    margin-top:10px;
+    position:relative;
+}
+.myEnvelope .envolpe-content span{
+    display:block;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background-color:#f5f5f5 ;
+}
+.myEnvelope .envolpe-content .round1{
+    position: absolute;
+    top:30%;
+    left:-15px;
+}
+.myEnvelope .envolpe-content .round2{
+    position: absolute;
+    top:30%;
+    right:-15px;
+}
+.myEnvelope .envolpe-content .counts{
+    font-size: 1.7rem;
+    color:red;
+}
+.myEnvelope .envolpe-content .go-use button{
+    background-color: #f4b200;
+    color:#ffffff;
+    padding:5px 20px;
+    border:0px;
+    border-radius:15px;
+}
+.myEnvelope .envolpe-content .bottom{
+    background: #fafafa;
+    padding:0px;
+}
+
+/*===================record======================*/
+.record .record-content{
+    font-size:14px;
+    background: #ffffff;
+    margin-bottom:10px;
+}
+.record .record-content img{
+    max-width:40px;
+    margin-top: 2px;
+}
+.record .record-content .money{
+    font-size: 20px;
+    margin-bottom:5px;
+}
+.record .record-content .start-time{
+    font-size: 16px;
+    margin-top: 7px;
+}

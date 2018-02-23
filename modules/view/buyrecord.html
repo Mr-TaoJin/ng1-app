@@ -1,0 +1,26 @@
+<div ng-controller="buyrecordCtrl">
+	<div class="bar bar-header red-gb">
+		<button class="button button-clear ion-ios-arrow-back" histroy></button>
+		<h1 class="title light">资金流水</h1>
+	</div>
+	<!--subheader-->
+	<div class="bar bar-subheader text-center row subheader-tab font12">
+		<a class="col" ng-class="{'tab-active':type=='1'}" ng-click="changeType(1)">投注站明细</a>
+		<a class="col" ng-class="{'tab-active':type=='2'}" ng-click="changeType(2)">在线支付</a>
+	</div>
+	<!--content-->
+	<div class="scroll-content has-header has-subheader has-subheader-tab" overflow-scroll="true" id="waiScrol">
+		<div class="jy-list list" id="contentScrol">
+			<div class="item row" ng-repeat="v in record">
+				<div class="col col-50">
+					<p class="jy-lx">{{v.cashType}}</p>
+					<p class="jy-ye">余额：<span>¥{{v.cashAfter}}</span></p>
+				</div>
+				<div class="col col-50 text-right">
+					<p class="jy-sj">{{v.insertTime}}</p>
+					<p ng-class="{'jy-zh':v.cashNumber>0,'jy-fu':v.cashNumber<0}"><span>{{v.cashNumberStr}}</span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

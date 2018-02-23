@@ -1,0 +1,81 @@
+<div    ng-controller="betscoreCtrl">
+<!--header-->
+<div class="bar bar-header red-gb">
+	<button class="button button-clear ion-ios-arrow-back"><histroy></histroy></button>
+	<div class="title">
+		<div class="toggle-tit">
+			<span class="toggle-active">全部</span>
+			<span>单关</span>
+		</div>
+	</div>
+	<div class="buttons">
+		<a href="#" class="button button-clear ion-ios-color-filter-outline icon-filter"></a>
+	</div>
+</div>
+<!--subheader-->
+<div class="bar bar-subheader text-center row subheader-tab font12">
+	<a href="竞足-胜平负.html" class="col col-25">胜平负/让球</a>
+	<a href="竞足-比分.html" class="col tab-active">比分</a>
+	<a href="竞足-总进球.html" class="col">总进球</a>
+	<a href="竞足-半全场.html" class="col">半全场</a>
+	<a href="竞足-混合过关.html" class="col">混合过关</a>
+</div>
+<!--footer-->
+<div class="bar bar-footer row stable-bg jc-next">
+	<div class="col col-75 grey3">
+		<p>已选<span>{{count}}</span>场</p>
+		<p class="notice grey8">*页面赔率仅供参考，奖金赔率以实际出票为准</p>
+	</div>
+	<div class="col col-25 jc-next-btn">
+		<button class="button light-bg" ng-click="betNext()" id="toNextBtn" ng-disabled="!hasMacth">下一步</button>
+	</div>
+</div>
+<!--content-->
+<div class="scroll-content has-header has-subheader has-footer has-subheader-tab" overflow-scroll="true">
+	<ion-scroll>
+		<div class="game-list-container list" ng-repeat="(k,v) in scoreMatch">
+			<div class="game-list-tit row">
+				<p class="col col-90">
+					<span>{{k.split('_')[0]}}</span>
+					<span>{{k.split('_')[1]}}</span>
+					<span>[12:00-次日12:00]</span>
+					<span>共<span>{{v.length}}</span>场比赛</span>
+				</p>
+				<button class="buton button-clear col" ng-class="jt" ng-click="hideMatch('{{k}}')"></button>	
+			</div>
+			<ion-item class="game-list-con item game-dan" ng-repeat="m in v" ng-show="showObj[k]">
+				<div class="row padding game-list-con-team">
+					<div class="col col-30 col-offset-20 text-right grey3 team01">
+						<span class="team-logo"><img ng-src="//m.surewin.com/static/image/teamlogos/png/{{m.h_id}}.png" err-src="//m.surewin.com/static/h5/img/logo-c.png?mid={{m.id}},{{m.h_id}},{{m.a_id}},1"></span>
+						<span>{{m.h_cn_abbr}}</span>
+						<span class="team-rank">{{m.h_order}}</span>
+					</div>
+					<div class="col col-15 text-center vs">
+						VS
+					</div>
+					<div class="col col-30 text-left grey3 team01">
+						<span class="team-rank">{{m.a_order}}</span>
+						<span>{{m.a_cn_abbr}}</span>
+						<span class="team-logo"><img ng-src="//m.surewin.com/static/image/teamlogos/png/{{m.a_id}}.png" err-src="//m.surewin.com/static/h5/img/logo-c.png?mid={{m.id}},{{m.h_id}},{{m.a_id}},2"></span>
+					</div>
+				</div>
+				<div class="row padding">
+					<div class="col text-center grey8 game-list-con-lt">
+						<span>{{m.l_cn_abbr}}</span>
+						<span>{{m.num}}</span>
+						<span>{{m.book_end_time.substring(11,16)}}截止</span>
+					</div>
+					<div class="col bet-btns">
+						<dl>
+							<dd class="bet-con" ng-class="betcls[m.id]">
+								<span  ng-click="showTab({{m.id}});">{{betContent[m.id]}}</span>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</ion-item>
+		</div>
+	</ion-scroll>
+	<score-div ishide="ishide"></score-div>
+</div>
+</div>

@@ -1,0 +1,89 @@
+<div class="bar bar-header black-gb">
+    <button class="button button-clear ion-ios-arrow-back" ui-sref="personal-center">返回</button>
+    <h1 class="title light">财务管理</h1>
+</div>
+<div class="scroll-content has-header" overflow-scroll="true">
+    <ion-scroll ng-controller="goldManagementCtrl">
+        <div class="goldManagement">
+            <div class="manage-top">
+                <img src="resources/img/management/gold-bg.png">
+                <div class="row text-center count">
+                    <div class="col">
+                        <p>可投注金额</p>
+                        <p class="tz-tx">1889.9</p>
+                    </div>
+                    <div class="col">
+                        <p>可提现金额</p>
+                        <p class="tz-tx">889.9</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center manage-middle">
+                <div class="col" ui-sref="topup">
+                    <img src="resources/img/management/chongzhi.png">
+                    <span>充 值</span>
+                </div>
+                <div class="col" ui-sref="withdrawal">
+                    <img src="resources/img/management/tixian.png">
+                    <span>提 现</span>
+                </div>
+            </div>
+            <div class="manage-content">
+               <ul class="list">
+                   <li class="item">
+                       <img src="resources/img/management/zdmx-logo.png" alt="">
+                       <span>账单明细</span>
+                   </li>
+                   <li class="item">
+                       <table>
+                           <tr>
+                               <td class="text-left top-up">充值</td>
+                               <td class="text-right red">+ 10</td>
+                           </tr>
+                           <tr>
+                               <td class="text-left">2017-05-02 14:16:56</td>
+                               <td class="text-right">余额：¥<span>10</span></td>
+                           </tr>
+                       </table>
+                   </li>
+                   <li class="item">
+                       <table>
+                           <tr>
+                               <td class="text-left top-up">提现</td>
+                               <td class="text-right red">+ 10</td>
+                           </tr>
+                           <tr>
+                               <td class="text-left">2017-05-02 14:16:56</td>
+                               <td class="text-right">余额：¥<span>10</span></td>
+                           </tr>
+                       </table>
+                   </li>
+                   <li class="item">
+                       <table>
+                           <tr>
+                               <td class="text-left top-up">购彩</td>
+                               <td class="text-right red">+ 10</td>
+                           </tr>
+                           <tr>
+                               <td class="text-left">2017-05-02 14:16:56</td>
+                               <td class="text-right">余额：¥<span>10</span></td>
+                           </tr>
+                       </table>
+                   </li>
+                   <li class="item">
+                       <table>
+                           <tr>
+                               <td class="text-left top-up">中奖</td>
+                               <td class="text-right red">+ 10</td>
+                           </tr>
+                           <tr>
+                               <td class="text-left">2017-05-02 14:16:56</td>
+                               <td class="text-right">余额：¥<span>10</span></td>
+                           </tr>
+                       </table>
+                   </li>
+               </ul>
+            </div>
+        </div>
+    </ion-scroll>
+</div>

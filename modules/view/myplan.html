@@ -1,0 +1,129 @@
+<div ng-controller="myPlanCtrl">
+	<div class="bar bar-header red-gb">
+		<button class="button button-clear ion-ios-arrow-back" histroy></button>
+		<h2 class="title light">我的计划</h2>
+	</div>
+	<!--subheader-->
+	<div class="bar bar-subheader text-center row subheader-tab font12">
+		<a  class="col" ng-class="{'tab-active':status=='ing'}" ng-click="switchType('ing')">进行中</a>
+		<a  class="col" ng-class="{'tab-active':status=='complate'}" ng-click="switchType('complate')">已结束</a>
+	</div>
+	<!--content-->
+	<div class="scroll-content has-header has-subheader has-footer has-subheader-tab" overflow-scroll="true" id="waiScrol">
+		<div class="profit-container">
+			<div class="profit-plan-list" id="contentScrol">
+				<div class="profit-plan text-center light-bg" ng-repeat="(i,p) in plan">
+					<div class="plan-game row">
+						<div class="col" ng-repeat="(k,v) in p.contentList" ng-click="showPlanDeatil(i,k)">
+							<p class="plan-xh">第{{k+1}}单</p>
+							<p class="plan-zt">{{v.winStr}}</p>
+							<p class="plan-sj">{{v.insertTime}}</p>
+						</div>
+					</div>
+					<div class="row plan-join">
+						<div class="col text-left">{{p.issueType}}第<span>{{p.issueNo}}</span>期</div>
+						<div class="col text-right" ng-if="p.planEarnMoney&&p.planEarnMoney!=null&&p.planEarnMoney!=''">计划盈利￥{{p.planEarnMoney}}元</div>
+						<div class="col text-right" ng-if="!p.planEarnMoney||p.planEarnMoney==null||p.planEarnMoney==''"><a ng-click="setEarnMoney(p.id)">未设置盈利金额</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--popup-->
+<div class="backdrop visible active" ng-show="showPlanTab"></div>
+<div class="popup-container popup-showing active popup-bet popup-his-plan" ng-show="showPlanTab">
+	<div class="popup">
+		<div class="popup-item">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding light">
+						<div class="col text-center">
+							<span class="padding-right">第<span>{{planDetail.issueNo}}</span>期</span>
+							<span>计划盈利<span>{{planDetail.price}}</span>元</span>
+						</div>
+					</div>
+					<p class="profit-plan-num">第<span>{{planDetail.index+1}}</span>单</p>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="profit-plan-con">
+					<table border="0" cellspacing="0" cellpadding="0" ng-repeat="pd in planDetail.bet.contentJson">
+						<tr>
+							<th colspan="5">
+								<span class="text-left">{{pd.h_cn_abbr}}</span>
+								<span class="score">{{pd.score!=null?pd.score:'-'}}</span>
+								<span class="text-right">{{pd.a_cn_abbr}}</span>
+							</th>
+						</tr>
+						<tr>
+							<td rowspan="2">
+								<span>{{pd.bno_cn}}</span>
+								<span>{{pd.league_name}}</span>
+								<span>{{pd.match_start_time.substring(11,16)}}</span>
+							</td>
+							<td>0</td>
+							<td ng-class="{'chose':pd.bet=='3','result':pd.winBet=='3'}">胜<u>{{pd.had.h}}</u></td>
+							<td ng-class="{'chose':pd.bet=='1','result':pd.winBet=='1'}">平<u>{{pd.had.d}}</u></td>
+							<td ng-class="{'chose':pd.bet=='0','result':pd.winBet=='0'}">负<u>{{pd.had.a}}</u></td>
+						</tr>
+						<tr>
+							<td class="rang">{{pd.hhad.fixedodds}}</td>
+							<td ng-class="{'chose':pd.bet=='r3','result':pd.winBet=='r3'}">胜<u>{{pd.hhad.h}}</u></td>
+							<td ng-class="{'chose':pd.bet=='r1','result':pd.winBet=='r1'}">平<u>{{pd.hhad.d}}</u></td>
+							<td ng-class="{'chose':pd.bet=='r0','result':pd.winBet=='r0'}">负<u>{{pd.hhad.a}}</u></td>
+						</tr>
+					</table>
+				</div>
+				<div class="profit-plan-yl">
+					<table border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td>本次投入</td>
+							<td>累计投入</td>
+							<td>奖金</td>
+						</tr>
+						<tr>
+							<td>{{planDetail.bet.betMoney}}</td>
+							<td>{{planDetail.ljMoney}}</td>
+							<td>{{planDetail.awardMoney!=null?planDetail.awardMoney:'-'}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="popup-buttons">
+				<button class="single-btn" ng-click="showPlanTab=false;">关闭查看</button>
+				<button class="qr" ng-click="betOnekey()" ng-if="planDetail.bet.winStatus==-1&&planDetail.earnMoney!=null&&planDetail.earnMoney!=''">一键投注</button>
+			</div>
+			<div class="plan-final" ng-if="planDetail.bet.winStatus=='0'">
+				<img src="resources/img/img-wtz.png">
+			</div>
+			<div class="plan-final" ng-if="planDetail.bet.winStatus=='1'">
+				<img src="resources/img/img-tz.png">
+			</div>
+		</div>
+	</div>
+	<a  class="popup-controller left" ng-click="showPlanDeatil(planDetail.issueInd,planDetail.index-1)"><img src="resources/img/img-arrow-left.png"></a>
+	<a  class="popup-controller right" ng-click="showPlanDeatil(planDetail.issueInd,planDetail.index+1)"><img src="resources/img/img-arrow-right.png"></a>
+	</div>
+	<!--popup-->
+	<div class="backdrop visible active" ng-show="showSetMoney"></div>
+	<div class="popup-container popup-showing active popup-bet popup-profit"  ng-show="showSetMoney">
+		<div class="popup">
+			<div class="popup-head">
+				<h3 class="popup-title">
+					<div class="row padding grey3">
+						<div class="col text-center">设置盈利金额（单位：元）</div>
+					</div>
+				</h3>
+			</div>
+			<div class="popup-body">
+				<div class="popup-notice">
+					<span>计划盈利：</span><input type="number" ng-model="planMoney"/>
+				</div>
+			</div>
+			<div class="popup-buttons">
+				<!--<button>支付失败</button>-->
+				<button class="qr single-btn" ng-click="sureSetMoney()">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
